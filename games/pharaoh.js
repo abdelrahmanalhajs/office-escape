@@ -62,7 +62,7 @@ function generate(){
   return {vals,pord:R.shuffle(keys),grid:R.shuffle(grid),door:d.slice().sort((a,b)=>a-b).join(''),eq:[2*f,f+r,r+c],lock3:''+f+r+c,sol,cards,box:sol.slice().reverse().map(k=>vals[k]).join('')};
 }
 function spots(el,list,x,after){
-  el.innerHTML=`<div class="scene" style="--cols:4">${list.map(s=>`<button class="spot ${x.st['f_'+s.id]?(s.card||s.piece?'found':'empty'):''}" type="button" data-s="${s.id}"><span style="font-size:2.2rem">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
+  el.innerHTML=`${OE.sceneOpen('bg-pharaoh',list,x)}${list.map((s,i)=>`<button style="${OE.slot(i,list.length)}" class="spot ${x.st['f_'+s.id]?(s.card||s.piece?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=list.find(z=>z.id===b.dataset.s);const first=!x.st['f_'+s.id];x.st['f_'+s.id]=1;x.save();
     if(s.card){x.sfx('find');x.bag.add(s.id,s.t,s.card,s.icon||'𓂀');x.bag.open(s.id);b.classList.add('found');}
     else if(s.piece){if(first){x.sfx('find');x.toast('لقيتوا قطعة بردية!');}b.classList.add('found');}

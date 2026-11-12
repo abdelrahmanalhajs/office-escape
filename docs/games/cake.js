@@ -40,7 +40,7 @@ const css=`
 `;
 const cover=`<svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="160" rx="80" ry="14" fill="#fff" stroke="#f2c6d3" stroke-width="3"/><path d="M60 156q10-8 22-2t26-3 30 4" stroke="#ffd0dc" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="70" cy="150" r="3" fill="#8a4a2a"/><circle cx="126" cy="152" r="2.5" fill="#8a4a2a"/><text x="100" y="118" text-anchor="middle" font-size="84" font-family="Baloo Bhaijaan 2" fill="#fff">?</text><circle cx="150" cy="56" r="26" fill="none" stroke="#fff" stroke-width="7"/><path d="M168 76l20 22" stroke="#fff" stroke-width="9" stroke-linecap="round"/></svg>`;
 function spots(el,list,x){
-  el.innerHTML=`<div class="scene" style="--cols:4">${list.map(s=>`<button class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span style="font-size:2.2rem">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
+  el.innerHTML=`${OE.sceneOpen('bg-cake',list,x)}${list.map((s,i)=>`<button style="${OE.slot(i,list.length)}" class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=list.find(z=>z.id===b.dataset.s);x.st['f_'+s.id]=1;x.save();
     if(s.card){x.sfx('find');x.bag.add(s.id,s.t,s.card,s.icon||'🔎');x.bag.open(s.id);b.classList.add('found');}else{x.sfx('click');x.toast(s.e);b.classList.add('empty');}});
 }
