@@ -88,7 +88,8 @@ function generate(){
   return {pw:''+a+b+c+d,a,b,c,d,visitor:oth[0],dr:[oth[1],oth[2]],fl,fax,faxAns:''+fax.br[fax.bi]+fax.dp[fax.di]+fax.dv[fax.vi],key:{X,Y,Z},race:{digs:R.shuffle(digs),rules,ans:t.join('')}};
 }
 function spots(el,list,x,onFind){
-  el.innerHTML=`${OE.sceneOpen('bg-office',list,x)}${list.map((s,i)=>`<button style="${OE.slot(i,list.length)}" class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
+  list=OE.trim(list,x);
+  el.innerHTML=`${OE.sceneOpen('bg-office',list,x)}${list.map((s,i)=>`<button style="${OE.slot(i,list.length)}" class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${OE.art(s.art)}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=list.find(z=>z.id===b.dataset.s);
     if(s.card){x.sfx('find');x.bag.add(s.id,s.cardTitle,s.card,s.icon||'✦');if(!x.st['f_'+s.id]){x.st['f_'+s.id]=1;x.save();b.classList.add('found');}x.bag.open(s.id);}
     else{x.sfx('click');x.toast(s.empty||'مفيش حاجة هنا.');x.st['f_'+s.id]=1;x.save();b.classList.add('empty');}

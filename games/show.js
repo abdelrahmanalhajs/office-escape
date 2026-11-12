@@ -103,9 +103,9 @@ const R1={key:'s1',title:'ودانكم مش هتنقذكم',short:'الأصوا�
     x.save();});
  }};
 function backstage(el,x){
-  const L=[{id:'s_cue',label:'كروت المذيع',art:'🗂',card:`<div class="card"><p class="hand">"اللحن الأصلي بتاع البرنامج اتعمل من حاجتين بس: الجرس… والجمهور. أي حاجة تانية دوشة."</p></div>`,t:'كارت المذيع'},
-   {id:'s_cam',label:'الكاميرا',art:'🎥',e:'الكاميرا شغالة. حد بيتفرج.'},{id:'s_light',label:'الكشاف',art:'💡',e:'سخن جدًا. ماتلمسوش.'},{id:'s_seat',label:'كراسي الجمهور',art:'🪑',e:'فاضية… بس سامعين ضحك؟'}];
-  el.innerHTML=`<b>ورا الكواليس</b>${OE.sceneOpen('bg-show',L,x)}${L.map((s,i)=>`<button style="${OE.slot(i,L.length)}" class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
+  const L=OE.trim([{id:'s_cue',label:'كروت المذيع',art:'🗂',card:`<div class="card"><p class="hand">"اللحن الأصلي بتاع البرنامج اتعمل من حاجتين بس: الجرس… والجمهور. أي حاجة تانية دوشة."</p></div>`,t:'كارت المذيع'},
+   {id:'s_cam',label:'الكاميرا',art:'🎥',e:'الكاميرا شغالة. حد بيتفرج.'},{id:'s_light',label:'الكشاف',art:'💡',e:'سخن جدًا. ماتلمسوش.'},{id:'s_seat',label:'كراسي الجمهور',art:'🪑',e:'فاضية… بس سامعين ضحك؟'}],x);
+  el.innerHTML=`<b>ورا الكواليس</b>${OE.sceneOpen('bg-show',L,x)}${L.map((s,i)=>`<button style="${OE.slot(i,L.length)}" class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}"><span class="art">${OE.art(s.art)}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=L.find(z=>z.id===b.dataset.s);x.st['f_'+s.id]=1;x.save();
     if(s.card){x.sfx('find');x.bag.add(s.id,s.t,s.card,'🗂');x.bag.open(s.id);b.classList.add('found');}else{x.sfx('click');x.toast(s.e);b.classList.add('empty');}});
 }
