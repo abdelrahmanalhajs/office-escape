@@ -56,7 +56,23 @@ const css=`
 @media(max-width:700px){.sh-board{grid-template-columns:repeat(3,minmax(0,1fr))}}
 `;
 const PADS=[{id:'bell',i:'🔔',l:'جرس',c:'#ff9d00'},{id:'clap',i:'👏',l:'تصفيق',c:'#ff3df2'},{id:'laugh',i:'😂',l:'ضحكة',c:'#00b3ff'},{id:'door',i:'🚪',l:'باب',c:'#7a5cff'},{id:'horn',i:'🎺',l:'بوق',c:'#ff4d6d'},{id:'meow',i:'🐱',l:'قطة',c:'#2bc48a'}];
-const TUNE=['bell','laugh','clap','meow','door','wave','laugh','bird'];
+const SHAPES={square:'<svg width="56" height="56" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="#ffd400"/></svg>',circle:'<svg width="56" height="56" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#ffd400"/></svg>',triangle:'<svg width="56" height="56" viewBox="0 0 10 10"><path d="M5 1l4 8H1z" fill="#ffd400"/></svg>'};
+const SHN={square:'المربع',circle:'الدائرة',triangle:'المثلث'},CLN={red:'الأحمر',blue:'الأزرق',green:'الأخضر',yellow:'الأصفر'};
+function generate(){
+  const R=OE.RND;let seq;do{seq=[0,1,2,3].map(()=>R.pick(['bell','clap','laugh']))}while(new Set(seq).size<2);
+  const tune=seq.slice();R.shuffle(['door','meow','wave','bird','horn']).slice(0,R.int(3,4)).forEach(d=>tune.splice(R.int(0,tune.length),0,d));
+  const nums=R.digits(3,1,99),big=R.int(0,1),sh=R.shuffle(['square','circle','triangle']).slice(0,2),cl=R.shuffle(['red','blue','green','yellow']).slice(0,2),lose=R.int(0,1);
+  const stages=R.shuffle([
+    {say:big?'اختاروا أكبر رقم!':'اختاروا أصغر رقم!',opts:nums.map(n=>[String(n),String(n)]),ans:String(big?Math.min(...nums):Math.max(...nums))},
+    {say:'اضغطوا على '+SHN[sh[0]]+'!',opts:sh.map(k=>[k,SHAPES[k]]),ans:sh[1]},
+    {say:'اختاروا اللون '+CLN[cl[0]]+'!',opts:cl.map(k=>[k,`<span style="display:block;width:56px;height:56px;border-radius:50%;background:${INK[k]}"></span>`]),ans:cl[1]},
+    {say:'اضغطوا على كلمة '+(lose?'LOSE':'WIN')+'!',opts:[['lose','LOSE'],['win','WIN']],ans:lose?'win':'lose'}]);
+  const order=R.shuffle(['red','blue','green','yellow']),board=[];
+  order.forEach((ink,i)=>{for(let k=0;k<4-i;k++)board.push([R.pick(order.filter(c=>c!==ink)).toUpperCase(),ink]);});
+  for(let k=0;k<3;k++)board.push(['',R.pick(order)]);
+  return {seq,tune,stages,board:R.shuffle(board),order,code:R.digits(3,1,9)};
+}
+const INK={red:'#ff2e4d',blue:'#2e7dff',green:'#22d36b',yellow:'#ffd400'};
 const bulbs=`<div class="sh-bulbs" aria-hidden="true">${'<i></i>'.repeat(14)}</div>`;
 const host=(t)=>`<div class="sh-host"><div class="av" aria-hidden="true">🎙</div><div class="bub">${t}</div></div>`;
 const cover=`<svg viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="shg" cx=".5" cy=".3"><stop offset="0" stop-color="#ffd400"/><stop offset="1" stop-color="#ff3df2"/></radialGradient></defs><circle cx="100" cy="92" r="70" fill="url(#shg)"/><circle cx="100" cy="92" r="58" fill="#1a0036"/>${Array.from({length:12},(_,i)=>{const a=i/12*Math.PI*2;return `<circle cx="${100+Math.cos(a)*64}" cy="${92+Math.sin(a)*64}" r="4" fill="#fff"/>`}).join('')}<rect x="88" y="62" width="24" height="44" rx="12" fill="#c9ced8"/><rect x="96" y="106" width="8" height="26" fill="#c9ced8"/><text x="100" y="186" text-anchor="middle" font-family="Bungee" font-size="20" fill="#ffd400">LAST SHOW</text></svg>`;
@@ -66,7 +82,7 @@ const R1={key:'s1',title:'ودانكم مش هتنقذكم',short:'الأصوا�
   'اللحن السري بتاع الاستوديو، مش بتاع الشارع. دوّروا ورا الكواليس.',
   {prism:['٤','نغمات','وحدة','بتتكرر'],text:'اللحن ٤ نغمات بس، ونغمة منهم بتتكرر.'}],
  render(el,x){
-  if(x.st.done)return piece(el,x,'2','🎧');
+  if(x.st.done)return piece(el,x,String(x.gen.code[0]),'🎧');
   x.st.seq=x.st.seq||[];
   el.innerHTML=`<div class="sh-stage stack">${bulbs}<div class="sh-title">DON'T TRUST YOUR EARS</div>
    ${host('"أنا هسمّعكم موسيقى البرنامج السرية، بس خلي بالكم... مش كل صوت هتسمعوه جزء من اللحن!"')}
@@ -78,12 +94,12 @@ const R1={key:'s1',title:'ودانكم مش هتنقذكم',short:'الأصوا�
   backstage(el.querySelector('#bk'),x);
   let playing=false;
   el.querySelector('#play').onclick=()=>{if(playing)return;playing=true;const eq=el.querySelector('#eq');eq.classList.add('on');
-    TUNE.forEach((s,i)=>setTimeout(()=>x.sfx(s),i*1500));setTimeout(()=>{eq.classList.remove('on');playing=false;},TUNE.length*1500);};
+    x.gen.tune.forEach((s,i)=>setTimeout(()=>x.sfx(s),i*1500));setTimeout(()=>{eq.classList.remove('on');playing=false;},x.gen.tune.length*1500);};
   el.querySelectorAll('.sh-pad').forEach(b=>b.onclick=()=>{x.sfx(b.dataset.p);b.classList.add('hit');setTimeout(()=>b.classList.remove('hit'),150);
     x.st.seq.push(b.dataset.p);
     const sl=el.querySelectorAll('#slots span');sl.forEach((s,i)=>s.textContent=x.st.seq[i]?PADS.find(p=>p.id===x.st.seq[i]).i:'');
     if(x.st.seq.length===4){const v=x.st.seq.join(',');x.st.seq=[];
-      setTimeout(()=>{if(x.check('iw2qm6',v)){x.st.done=1;x.sfx('tada');x.rerender();}else{x.fail(el.querySelector('#slots'),el.querySelector('#m'),'الجمهور بيصفّر... مش ده اللحن.');sl.forEach(s=>s.textContent='');}},700);}
+      setTimeout(()=>{if(v===x.gen.seq.join(',')){x.st.done=1;x.sfx('tada');x.rerender();}else{x.fail(el.querySelector('#slots'),el.querySelector('#m'),'الجمهور بيصفّر... مش ده اللحن.');sl.forEach(s=>s.textContent='');}},700);}
     x.save();});
  }};
 function backstage(el,x){
@@ -98,26 +114,20 @@ function piece(el,x,d,icon){
   el.innerHTML=`<div class="sh-stage stack" style="align-items:center">${bulbs}<div class="sh-title">PIECE UNLOCKED</div><div class="sh-big">${d}</div><p class="muted">القطعة اتحفظت في حقيبة الأدلة.</p><button class="btn big" id="nx" type="button">الجولة اللي بعدها</button></div>`;
   el.querySelector('#nx').onclick=()=>x.solve(100);
 }
-const STAGES=[{say:'اختاروا أكبر رقم!',opts:[['66','66'],['1','1'],['12','12']],h:'yvn2qe'},
- {say:'اضغطوا على المربع!',opts:[['square','<svg width="56" height="56" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="#ffd400"/></svg>'],['circle','<svg width="56" height="56" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#ffd400"/></svg>']],h:'16vxqjv'},
- {say:'اختاروا اللون الأحمر!',opts:[['red','<span style="display:block;width:56px;height:56px;border-radius:50%;background:#ff2e4d"></span>'],['blue','<span style="display:block;width:56px;height:56px;border-radius:50%;background:#2e7dff"></span>']],h:'e07zyv'},
- {say:'اضغطوا على كلمة LOSE!',opts:[['lose','LOSE'],['win','WIN']],h:'aeeaer'}];
 const R2={key:'s2',title:'Reverse the Rules',short:'العكس',goal:'عدّوا الأربع مراحل. أي غلطة بترجعكم للأول.',
  hints:['المذيع عايز يكسب. انتوا عايزين تكسبوا.','اسم الجولة مكتوب قدامكم بالإنجليزي. اقروه كويس.',{prism:['⇄','⇄','⇄','⇄'],text:'كل تعليمة ليها عكس واحد بس على الشاشة. اتجاهلوا كلام المذيع.'}],
  render(el,x){
-  if(x.st.done)return piece(el,x,'7','🔄');
-  const i=x.st.i||0, s=STAGES[i];
+  if(x.st.done)return piece(el,x,String(x.gen.code[1]),'🔄');
+  const STAGES=x.gen.stages,i=x.st.i||0, s=STAGES[i];
   x.st.order=x.st.order||{};x.st.order[i]=x.st.order[i]||x.shuffle(s.opts.map(o=>o[0]));
   el.innerHTML=`<div class="sh-stage stack">${bulbs}<div class="sh-title">REVERSE THE RULES</div>
    <div class="sh-prog">${STAGES.map((_,k)=>`<i class="${k<i?'on':''}"></i>`).join('')}</div>
    ${host('"'+s.say+'"')}
    <div class="sh-opts">${x.st.order[i].map(k=>`<button class="sh-opt" type="button" data-o="${k}">${s.opts.find(o=>o[0]===k)[1]}</button>`).join('')}</div><div class="msg" id="m" style="text-align:center"></div></div>`;
   el.querySelectorAll('.sh-opt').forEach(b=>b.onclick=()=>{
-    if(x.check(s.h,b.dataset.o)){x.sfx('ok');x.st.i=i+1;if(x.st.i>=STAGES.length){x.st.done=1;x.sfx('tada');}x.rerender();}
+    if(b.dataset.o===s.ans){x.sfx('ok');x.st.i=i+1;if(x.st.i>=STAGES.length){x.st.done=1;x.sfx('tada');}x.rerender();}
     else{x.sfx('laugh');x.st.i=0;x.st.order={};x.save();x.fail(el.querySelector('.sh-opts'),el.querySelector('#m'),'المذيع بيضحك… رجعتوا لأول مرحلة.');setTimeout(()=>x.rerender(),1200);}});
  }};
-const INK={red:'#ff2e4d',blue:'#2e7dff',green:'#22d36b',yellow:'#ffd400'};
-const BOARD=[['RED','blue'],['GREEN','red'],['YELLOW','blue'],['',  'yellow'],['BLUE','green'],['RED','yellow'],['GREEN','blue'],['','green'],['YELLOW','red'],['BLUE','red'],['','yellow'],['RED','blue'],['YELLOW','green']];
 const R3={key:'s3',title:'Color Chaos',short:'الألوان',goal:'رتّبوا الألوان صح، وبعدها افتحوا صندوق الجوائز.',
  hints:['الكلمة بتكدب. الحبر لأ.','المربعات اللي مفيهاش كلام مش كلمات.',
   {prism:['<span style="color:#2e7dff">RED</span>','= أزرق','عدّ','رتّب'],text:'عدّوا لون الحبر بتاع الكلمات بس، ورتّبوا من الأكتر للأقل. والصندوق بيحب ترتيب الجولات.'}],
@@ -127,29 +137,29 @@ const R3={key:'s3',title:'Color Chaos',short:'الألوان',goal:'رتّبوا
   el.innerHTML=`<div class="sh-stage stack">${bulbs}<div class="sh-title">COLOR CHAOS</div>
    ${host('"الألوان عمرها ما كانت المشكلة… المشكلة إنكم بتصدقوا أول حاجة عيونكم بتشوفها!"')}
    <div class="card"><p class="hand" style="text-align:center">اسمع كلامك أصدقك… أشوف أمورك أستعجب</p></div>
-   <div class="sh-board">${BOARD.map(([w,c],k)=>w?`<div class="sh-w" style="color:${INK[c]};animation-delay:${k*.05}s">${w}</div>`:`<div class="sh-w sw" style="background:${INK[c]};animation-delay:${k*.05}s"></div>`).join('')}</div>
+   <div class="sh-board">${x.gen.board.map(([w,c],k)=>w?`<div class="sh-w" style="color:${INK[c]};animation-delay:${k*.05}s">${w}</div>`:`<div class="sh-w sw" style="background:${INK[c]};animation-delay:${k*.05}s"></div>`).join('')}</div>
    <p style="text-align:center">رتّبوا الألوان من الأكتر ظهورًا للأقل:</p>
    <div class="sh-slots" id="slots">${[0,1,2,3].map(i=>`<span style="${x.st.pick[i]?`background:${INK[x.st.pick[i]]};border-style:solid`:''}"></span>`).join('')}</div>
    <div class="sh-colors">${Object.keys(INK).map(k=>`<button class="sh-c" type="button" data-c="${k}" style="background:${INK[k]}" aria-label="${k}"></button>`).join('')}</div><div class="msg" id="m" style="text-align:center"></div></div>`;
   el.querySelectorAll('.sh-c').forEach(b=>b.onclick=()=>{if(x.st.pick.includes(b.dataset.c))return;x.sfx('click');x.st.pick.push(b.dataset.c);
-    if(x.st.pick.length===4){const v=x.st.pick.join(',');x.st.pick=[];if(x.check('1w7nwmd',v)){x.st.done=1;x.sfx('tada');x.rerender();return;}x.save();x.fail(el.querySelector('#slots'),el.querySelector('#m'),'عيونكم صدّقت الكلام.');setTimeout(()=>x.rerender(),900);return;}
+    if(x.st.pick.length===4){const v=x.st.pick.join(',');x.st.pick=[];if(v===x.gen.order.join(',')){x.st.done=1;x.sfx('tada');x.rerender();return;}x.save();x.fail(el.querySelector('#slots'),el.querySelector('#m'),'عيونكم صدّقت الكلام.');setTimeout(()=>x.rerender(),900);return;}
     x.rerender();});
  }};
 function prize(el,x){
-  x.bag.add('piece_2','قطعة من كود الجائزة','<div class="sh-pieces"><div class="sh-piece"><small>🎨</small>5</div></div>','🎨');
-  const pcs=x.shuffle([['🎧','2'],['🔄','7'],['🎨','5']]);
+  x.bag.add('piece_2','قطعة من كود الجائزة','<div class="sh-pieces"><div class="sh-piece"><small>🎨</small>'+x.gen.code[2]+'</div></div>','🎨');
+  const pcs=x.shuffle([['🎧',x.gen.code[0]],['🔄',x.gen.code[1]],['🎨',x.gen.code[2]]]);
   el.innerHTML=`<div class="sh-stage stack" style="align-items:center">${bulbs}<div class="sh-title">GRAND PRIZE</div>
    <div class="sh-pieces">${pcs.map(p=>`<div class="sh-piece"><small>${p[0]}</small>${p[1]}</div>`).join('')}</div>
    <div class="sh-prize"><div class="sh-box" id="box"><div class="b"></div><div class="rb"></div><div class="l"></div></div></div>
    <div id="lk"></div><div class="msg" id="m"></div></div>`;
   el.querySelector('#lk').innerHTML=x.lockHTML('lkp',3,{label:'كود صندوق الجوائز'});
-  x.wireLock('lkp',3,v=>{if(x.check('urzcgb',v)){el.querySelector('#box').classList.add('open');x.sfx('drum');setTimeout(()=>x.solve(0),1600);return true;}x.fail(el.querySelector('#box'),el.querySelector('#m'),'الصندوق مش مقتنع.');return false;});
+  x.wireLock('lkp',3,v=>{if(v===x.gen.code.join('')){el.querySelector('#box').classList.add('open');x.sfx('drum');setTimeout(()=>x.solve(0),1600);return true;}x.fail(el.querySelector('#box'),el.querySelector('#m'),'الصندوق مش مقتنع.');return false;});
 }
 OE.register({id:'show',short:'البرنامج',title:'The Last Game Show',theme:'show',color:'#7a0aa8',
  tagline:'برنامج مسابقات اختفى من سنين… ورجع عشانكم.',minutes:30,players:'٣–٦ لاعبين',difficulty:3,cover,
  story:`<p>من سنين، برنامج مسابقات اسمه The Last Game Show كان ملايين بيتفرجوا عليه. في ليلة الحلقة الأخيرة، المذيع اختفى، والبث اتقطع.</p><p style="margin-top:8px">بعد سنين، وصلكم إيميل: <span class="ltr">"Congratulations! You've been selected for the final episode."</span> دخلتوا الاستوديو… والباب اتقفل وراكم.</p>`,
  opening:x=>x.voice('المذيع','"أهلًا بأبطال الحلقة الأخيرة! قدامكم ٣٠ دقيقة تكسبوا ٣ جولات وتوصلوا للجائزة الكبرى. بس خليكم فاكرين… هنا مش دايمًا الإجابة الصح هي اللي هتكسبكم!"',{av:'🎙',btn:'يلا'}),
- rooms:[R1,R2,R3],
+ rooms:[R1,R2,R3], generate,
  winHTML:x=>`<div class="sh-end" style="width:100%"><div class="a"><div class="sh-title" style="font-size:2rem">CONGRATULATIONS!<br>YOU ARE THE LAST WINNERS!</div></div><div class="b">${host('"استنوا… هو أنا قلتلكم إنكم تقدروا تخرجوا؟!"')}</div><div class="blk"></div><div class="c"><div class="sh-title" style="font-size:2.4rem">JUST KIDDING!<br>YOU MADE IT!</div></div></div><span class="trophy">${esc(x.run.team)}</span>`,
  loseHTML:()=>`<h1>البث اتقطع</h1>${host('"للأسف… الحلقة الأخيرة لسه مخلصتش. ونسيت أقولكم: مفيش إعادة."')}`,
 });

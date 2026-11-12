@@ -46,79 +46,93 @@ function spots(el,list,x){
 }
 const R1={key:'c1',title:'مسرح الجريمة',short:'الصالة',goal:'افتحوا صندوق الأدلة.',
  hints:['التلات ورقات بيكملوا بعض. ولا واحدة فيها ساعة النور.','احسبوا التورتة وصلت إمتى الأول.',
-  {prism:['20:00','−40','+15','؟؟:؟؟'],text:'الصندوق بيقرا الساعة زي ساعة الحيطة، مش زي الدعوة.'}],
+  {prism:['الحفلة','− ؟','+ ؟','؟؟:؟؟'],text:'الصندوق بيقرا الساعة زي ساعة الحيطة، مش زي الدعوة.'}],
  render(el,x){
   el.innerHTML=`<div class="ck-room"><div class="ck-tape">CRIME SCENE · ممنوع الأكل · CRIME SCENE · ممنوع الأكل</div>
    <svg class="ck-plate" viewBox="0 0 220 90" aria-hidden="true"><ellipse cx="110" cy="60" rx="100" ry="22" fill="#fff" stroke="#f2c6d3" stroke-width="3"/><path d="M50 56q20-10 36 0t40-2 40 6" stroke="#ffd0dc" stroke-width="8" fill="none" stroke-linecap="round"/><g class="crumb"><circle cx="80" cy="50" r="3" fill="#8a4a2a"/><circle cx="140" cy="62" r="4" fill="#8a4a2a"/><circle cx="118" cy="48" r="2" fill="#8a4a2a"/></g></svg>
-   <p style="text-align:center" class="muted">ساعة الحيطة: <span class="ck-clock" id="wc">19:58</span></p></div>
+   <p style="text-align:center" class="muted">ساعة الحيطة: <span class="ck-clock" id="wc">${f24(x.gen.party-2)}</span></p></div>
    <div id="sc"></div>
    <div class="card tape"><b>على صندوق الأدلة</b><p class="hand">«لو عرفتوا النور قطع إمتى هتعرفوا أول خيط في الجريمة… وياريت متاكلوش الأدلة»</p></div>
    <div class="ck-box" id="bx"><div class="bx"><div class="ld"></div><div class="ky">🗝</div></div></div>
    <div class="row" style="justify-content:center"><div id="lk"></div></div><div class="msg" id="m" style="text-align:center"></div>`;
   spots(el.querySelector('#sc'),[
-   {id:'c_inv',label:'ترابيزة الهدايا',art:'🎁',t:'دعوة عيد الميلاد',icon:'💌',card:'<div class="card"><p class="hand">انتوا معزومين على عيد ميلاد… مفاجأة!<br>الحفلة الساعة 8 مساءً. متتأخروش.</p></div>'},
-   {id:'c_bak',label:'باب التلاجة',art:'🧲',t:'ورقة الحلواني',icon:'🧾',card:'<div class="card"><p class="hand">التورتة اتسلّمت واتحطت في التلاجة قبل ميعاد الحفلة بأربعين دقيقة. بالهنا.</p></div>'},
-   {id:'c_msg',label:'موبايل على الكنبة',art:'📱',t:'رسالة صاحب البيت',icon:'💬',card:'<div class="card"><p class="hand">يا جماعة النور قطع! التورتة يدوب كانت واصلة من ربع ساعة… حد يشوف الكشاف فين.</p></div>'},
+   {id:'c_inv',label:'ترابيزة الهدايا',art:'🎁',t:'دعوة عيد الميلاد',icon:'💌',card:'<div class="card"><p class="hand">انتوا معزومين على عيد ميلاد… مفاجأة!<br>الحفلة الساعة '+f12(x.gen.party)+' مساءً. متتأخروش.</p></div>'},
+   {id:'c_bak',label:'باب التلاجة',art:'🧲',t:'ورقة الحلواني',icon:'🧾',card:'<div class="card"><p class="hand">التورتة اتسلّمت واتحطت في التلاجة قبل ميعاد الحفلة '+XW[x.gen.X]+'. بالهنا.</p></div>'},
+   {id:'c_msg',label:'موبايل على الكنبة',art:'📱',t:'رسالة صاحب البيت',icon:'💬',card:'<div class="card"><p class="hand">يا جماعة النور قطع! التورتة يدوب كانت واصلة من '+YW[x.gen.Y]+'… حد يشوف الكشاف فين.</p></div>'},
    {id:'c_bal',label:'بلالين',art:'🎈',e:'بالونة فرقعت. محدش اتخض خالص.'},{id:'c_can',label:'علبة شمع',art:'🕯',e:'شمع من غير تورتة. مأساة.'},
    {id:'c_sofa',label:'تحت الكنبة',art:'🛋',e:'شوكة عليها كريمة. حد كان مستعجل.'},{id:'c_spk',label:'السماعة',art:'🔊',e:'بلاي ليست عيد ميلاد على الصامت.'},{id:'c_cat',label:'القطة',art:'🐈',e:'بريئة. المرة دي.'}],x);
   el.querySelector('#lk').innerHTML=x.lockHTML('lkc1',4,{label:'صندوق الأدلة'});
-  x.wireLock('lkc1',4,v=>{if(x.check('8w5h7x',v)){el.querySelector('#bx').classList.add('open');x.sfx('unlock');
+  x.wireLock('lkc1',4,v=>{if(v===x.gen.cut){el.querySelector('#bx').classList.add('open');x.sfx('unlock');
     x.bag.add('c_note','ورقة من الصندوق','<div class="card"><p class="hand">«اللي خد التورتة غالبًا كان موجود وسطكم… ومش بعيد يكون لسه بيمثل دور البريء!»</p></div>','🗝');
     setTimeout(()=>x.voice('ورقة جوه الصندوق','«اللي خد التورتة غالبًا كان موجود وسطكم… ومش بعيد يكون لسه بيمثل دور البريء!»',{av:'🗝',onClose:()=>x.solve(100)}),1500);return true;}
     x.fail(el.querySelector('#bx'),el.querySelector('#m'),'الصندوق مقفول. جربوا تاني.');return false;});
  }};
-const SUS=[{id:'omar',n:'عمر',e:'🧔',c:'#3a7bd5',log:'«أنا كنت في الصالة قبل التورتة ما توصل بعشر دقايق. قعدت ربع ساعة وخرجت أجيب تلج.»'},
- {id:'nada',n:'ندى',e:'👩',c:'#c94b9b',log:'«دخلت أول ما عمر خرج، أعلّق الزينة. خرجت قبل النور ما يقطع بدقيقتين، والله.»'},
- {id:'karim',n:'كريم',e:'🧑',c:'#2bb673',log:'«دخلت بعد ندى ما دخلت بخمس دقايق. فضلت جوه لحد قبل الحفلة بعشر دقايق. كنت… بظبط السماعات.»'},
- {id:'salma',n:'سلمى',e:'👩‍🦱',c:'#e0a530',log:'«أنا دخلت بعد النور ما قطع بخمس دقايق، ومشيت قبل الحفلة بخمس دقايق. ملقتش تورتة أصلًا.»'}];
+const PEOPLE=[{id:'omar',n:'عمر',m:1,e:'🧔',c:'#3a7bd5'},{id:'nada',n:'ندى',m:0,e:'👩',c:'#c94b9b'},{id:'karim',n:'كريم',m:1,e:'🧑',c:'#2bb673'},{id:'salma',n:'سلمى',m:0,e:'👩‍🦱',c:'#e0a530'}];
+const f24=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
+const f12=t=>{const h=Math.floor(t/60)-12,m=t%60;return m?h+':'+String(m).padStart(2,'0'):String(h)};
+const XW={40:'بأربعين دقيقة',45:'بخمسة وأربعين دقيقة',50:'بخمسين دقيقة'},YW={15:'ربع ساعة',20:'تلت ساعة'};
+const LN={choc:'الشوكولاتة',cake:'الكيك',cream:'الكريمة',straw:'الفراولة'};
+function generate(){
+  const R=OE.RND,party=R.pick([1140,1170,1200,1230,1260]),X=R.pick([40,45,50]),Y=R.pick([15,20]),C=party-X+Y,entry=C-5;
+  const [early,quick,thief,late]=R.shuffle(PEOPLE),logs={},ex=R.shuffle(['كنت بجيب تلج','كنت بعلّق الزينة','كنت بظبط السماعات','كنت بدوّر على الشاحن']);
+  logs[early.id]='«أنا كنت في الصالة قبل التورتة ما توصل بعشر دقايق. قعدت ربع ساعة وخرجت. '+ex[0]+'.»';
+  logs[quick.id]=`«دخلت أول ما ${early.n} ${early.m?'خرج':'خرجت'}. خرجت قبل النور ما يقطع بدقيقتين. ${ex[1]}.»`;
+  logs[thief.id]=`«دخلت بعد ${quick.n} ما ${quick.m?'دخل':'دخلت'} ${Y===15?'بخمس دقايق':'بعشر دقايق'}. فضلت جوه ربع ساعة بعد النور ما قطع. ${ex[2]}.»`;
+  logs[late.id]='«أنا دخلت بعد النور ما قطع بخمس دقايق، ومشيت بعد ربع ساعة. '+ex[3]+'.»';
+  const order=R.shuffle(['choc','cake','cream','straw']),dg=R.digits(3,1,9),nums={},berries=R.int(1,5);order.filter(k=>k!=='straw').forEach((k,i)=>nums[k]=dg[i]);
+  const recipe=R.shuffle([`${LN[order[0]]} في القاعدة.`,`${LN[order[1]]} فوق ${LN[order[0]]} مباشرة.`,`${LN[order[2]]} فوق ${LN[order[1]]} مباشرة.`,`${LN[order[3]]} آخر طبقة فوق.`]);
+  return {party,X,Y,cut:f24(C).replace(':',''),sus:PEOPLE.map(p=>({...p,log:logs[p.id]})),acc:thief.id+'@'+(Math.floor(entry/60)-12)+String(entry%60).padStart(2,'0'),thief:thief.n,order,nums,berries,recipe,fridge:order.map(k=>k==='straw'?berries:nums[k]).join('')};
+}
 const R2={key:'c2',title:'كلنا أبرياء يا جماعة',short:'الكاميرات',goal:'حددوا المتهم… وساعة دخوله بالظبط.',
  hints:['محدش فيهم قال ساعة. كلهم بيحكوا بالنسبة لحاجة تانية.','رتّبوهم على خط زمني. الأدلة بتاعة الصالة لسه في الحقيبة.',
   {prism:['قبل','بعد','مش وقت','الوصول'],text:'تلات شروط على الشاشة. واحد بس بيحققهم التلاتة.'}],
  render(el,x){
+  const SUS=x.gen.sus;
   el.innerHTML=`<div class="ck-cctv stack"><div class="row" style="justify-content:space-between"><span>CAM-02 · LIVING ROOM</span><span class="ck-rec">● REC</span></div>
    <p style="color:#fff;font-family:var(--f-body)">التورتة كانت موجودة لحد ما النور قطع. بعدها اختفت.</p>
    <ul style="margin:0;padding-inline-start:1.2em;color:#fff;font-family:var(--f-body)"><li>اللي أخد التورتة دخل قبل اختفائها.</li><li>خرج بعد اختفائها.</li><li>ماكانش في الصالة وقت وصول التورتة.</li></ul>
    <div class="ck-sus">${SUS.map(s=>`<button class="ck-s" type="button" data-s="${s.id}"><span class="ph" style="--pc:${s.c}">${s.e}</span><b>${s.n}</b><small style="opacity:.7">سجل الحركة</small></button>`).join('')}</div></div>
    <div class="panel stack"><b>محضر الاتهام</b><div class="ck-acc">
     <label>المتهم<select class="field" id="who"><option value="">—</option>${SUS.map(s=>`<option value="${s.id}">${s.n}</option>`).join('')}</select></label>
-    <label>دخل الساعة<select class="field mono" id="hh"><option>6</option><option>7</option><option>8</option></select></label>
+    <label>دخل الساعة<select class="field mono" id="hh"><option>6</option><option>7</option><option>8</option><option>9</option></select></label>
     <label>الدقيقة<select class="field mono" id="mm">${Array.from({length:12},(_,i)=>`<option>${String(i*5).padStart(2,'0')}</option>`).join('')}</select></label>
     <button class="btn" id="go" type="button">وجّهوا الاتهام</button></div><span class="muted" style="font-size:.85rem">اتهام غلط = ٣٠ ثانية خصم</span><div class="msg" id="m"></div></div>`;
   el.querySelectorAll('.ck-s').forEach(b=>b.onclick=()=>{const s=SUS.find(z=>z.id===b.dataset.s);x.sfx('click');x.bag.add('c_'+s.id,'أقوال '+s.n,`<div class="card"><p class="hand">${s.log}</p></div>`,s.e);x.bag.open('c_'+s.id);});
   el.querySelector('#go').onclick=()=>{const w=el.querySelector('#who').value,m=el.querySelector('#m');if(!w){x.fail(null,m,'اختاروا متهم.');return;}
     const k=w+'@'+el.querySelector('#hh').value+el.querySelector('#mm').value;
-    if(x.check('1mez22f',k)){x.sfx('unlock');x.voice('نظام الكاميرات','«تم تحديد المتهم بنجاح! بس واضح إنه نسي إن الكاميرات مش بتنسى… حتى لو هو نسي يمسح الكريمة من إيده 😂»<br><br>🗝 مفتاح المطبخ معاكم.',{av:'📹',onClose:()=>x.solve(100)});}
+    if(k===x.gen.acc){x.sfx('unlock');x.voice('نظام الكاميرات','«تم تحديد المتهم بنجاح! بس واضح إنه نسي إن الكاميرات مش بتنسى… حتى لو هو نسي يمسح الكريمة من إيده 😂»<br><br>🗝 مفتاح المطبخ معاكم.',{av:'📹',onClose:()=>x.solve(100)});}
     else{x.run.pen+=30;x.save();x.fail(el.querySelector('.ck-acc'),m,'«واضح إنك اتسرعت في الحكم يا حضرة المحقق… ارجع راجع الأدلة!»');}};
  }};
 const LAY={choc:{n:'شوكولاتة',c:'#5a3320',w:'200px',num:'9'},cake:{n:'كيك',c:'#e0b060',w:'170px',num:'4'},cream:{n:'كريمة',c:'#f7a8c0',w:'140px',num:'7'},straw:{n:'فراولة',c:'#e2264d',w:'110px',num:'🍓🍓'}};
 const R3={key:'c3',title:'المطبخ ومهمة إنقاذ التورتة',short:'المطبخ',goal:'التلاجة مقفولة بكود. ابنوا التورتة صح وافتحوها.',
- hints:['الوصفة مش مكتوبة بالترتيب. رتّبوها انتوا.','الكود بيتقرا من القاعدة لفوق.',{prism:['🍓','🍓','= ؟','عدّوا'],text:'طبقة واحدة مفيهاش رقم مكتوب. بصّوا عليها كويس.'}],
+ hints:['الوصفة مش مكتوبة بالترتيب. رتّبوها انتوا، ومتفترضوش إن التورتة عادية.','الكود بيتقرا من القاعدة لفوق.',{prism:['🍓','🍓','= ؟','عدّوا'],text:'طبقة واحدة مفيهاش رقم مكتوب. بصّوا عليها كويس.'}],
  render(el,x){
   x.st.stack=x.st.stack||[];
+  const num=k=>k==='straw'?'🍓'.repeat(x.gen.berries):String(x.gen.nums[k]);
   el.innerHTML=`<div id="sc"></div>
-   <div class="ck-room"><div class="ck-stack"><div class="ck-tower" style="${x.st.built?'':'animation:none'}">${x.st.stack.map(k=>`<button class="ck-lay" type="button" data-rm="${k}" style="--c:${LAY[k].c};--w:${LAY[k].w}" aria-label="شيل ${LAY[k].n}">${LAY[k].num}</button>`).join('')||'<span class="muted">الطبق فاضي</span>'}</div></div>
-   ${x.st.built?'':`<div class="ck-parts">${x.shuffle(Object.keys(LAY)).map(k=>`<button class="ck-part ${x.st.stack.includes(k)?'used':''}" type="button" data-k="${k}" style="--c:${LAY[k].c}"><span class="sw">${LAY[k].num}</span><span>${LAY[k].n}</span></button>`).join('')}</div>
+   <div class="ck-room"><div class="ck-stack"><div class="ck-tower" style="${x.st.built?'':'animation:none'}">${x.st.stack.map((k,i)=>`<button class="ck-lay" type="button" data-rm="${k}" style="--c:${LAY[k].c};--w:${200-i*28}px;font-size:${k==='straw'?'.8rem':'1.3rem'}" aria-label="شيل ${LAY[k].n}">${num(k)}</button>`).join('')||'<span class="muted">الطبق فاضي</span>'}</div></div>
+   ${x.st.built?'':`<div class="ck-parts">${x.shuffle(Object.keys(LAY)).map(k=>`<button class="ck-part ${x.st.stack.includes(k)?'used':''}" type="button" data-k="${k}" style="--c:${LAY[k].c}"><span class="sw" style="font-size:${k==='straw'?'.6rem':'1rem'}">${num(k)}</span><span>${LAY[k].n}</span></button>`).join('')}</div>
    <p class="muted" style="text-align:center;font-size:.85rem">دوسوا على طبقة تتحط فوق اللي قبلها. دوسوا على طبقة في التورتة تشيلوها.</p>
    <div class="row" style="justify-content:center"><button class="btn" id="bd" type="button" ${x.st.stack.length===4?'':'disabled'}>التورتة جاهزة</button></div>`}</div>
    <div class="row" style="justify-content:center;gap:24px;align-items:center"><div class="ck-fridge" id="fr"><div class="in">🎂</div><div class="dr"><span class="hd"></span>❄</div></div><div id="lk"></div></div><div class="msg" id="m" style="text-align:center"></div>`;
   spots(el.querySelector('#sc'),[
-   {id:'c_rec',label:'كتاب الطبخ',art:'📖',t:'الوصفة',icon:'📖',card:'<div class="card"><p class="hand">«عشان تعملوا تورتة مظبوطة مش مجرد خليط عشوائي زي اللي بيعمله عمر في المطبخ:»<br>• الكريمة فوق الكيك مباشرة.<br>• الفراولة آخر طبقة فوق.<br>• الكيك فوق الشوكولاتة مباشرة.<br>• الشوكولاتة في القاعدة.</p></div>'},
-   {id:'c_sink',label:'الحوض',art:'🚰',e:'سكينة تورتة مغسولة بسرعة.'},{id:'c_oven',label:'الفرن',art:'♨',e:'بارد. محدش خبز حاجة.'},{id:'c_apr',label:'مريلة',art:'🥼',e:'عليها بصمة كريمة. مقاس كريم.'}],x);
+   {id:'c_rec',label:'كتاب الطبخ',art:'📖',t:'الوصفة',icon:'📖',card:'<div class="card"><p class="hand">«عشان تعملوا تورتة مظبوطة مش مجرد خليط عشوائي زي اللي بيعمله عمر في المطبخ:»<br>'+x.gen.recipe.map(t=>'• '+t).join('<br>')+'</p></div>'},
+   {id:'c_sink',label:'الحوض',art:'🚰',e:'سكينة تورتة مغسولة بسرعة.'},{id:'c_oven',label:'الفرن',art:'♨',e:'بارد. محدش خبز حاجة.'},{id:'c_apr',label:'مريلة',art:'🥼',e:'عليها بصمة كريمة. مقاس '+x.gen.thief+'.'}],x);
   el.querySelectorAll('.ck-part').forEach(b=>b.onclick=()=>{if(x.st.stack.includes(b.dataset.k))return;x.st.stack.push(b.dataset.k);x.sfx('drip');x.rerender();});
   if(!x.st.built)el.querySelectorAll('.ck-lay').forEach(b=>b.onclick=()=>{x.st.stack=x.st.stack.filter(k=>k!==b.dataset.rm);x.sfx('click');x.rerender();});
-  const bd=el.querySelector('#bd');if(bd)bd.onclick=()=>{if(x.check('1uspzyz',x.st.stack.join(','))){x.st.built=1;x.sfx('magic');x.rerender();}else{x.fail(el.querySelector('.ck-stack'),el.querySelector('#m'),'التورتة وقعت. ده خليط عمر.');x.st.stack=[];setTimeout(()=>x.rerender(),900);}};
+  const bd=el.querySelector('#bd');if(bd)bd.onclick=()=>{if(x.st.stack.join(',')===x.gen.order.join(',')){x.st.built=1;x.sfx('magic');x.rerender();}else{x.fail(el.querySelector('.ck-stack'),el.querySelector('#m'),'التورتة وقعت. ده خليط عمر.');x.st.stack=[];setTimeout(()=>x.rerender(),900);}};
   el.querySelector('#lk').innerHTML=x.lockHTML('lkc3',4,{label:'كود التلاجة'});
   x.wireLock('lkc3',4,v=>{if(!x.st.built){x.fail(el.querySelector('#fr'),el.querySelector('#m'),'ابنوا التورتة الأول.');return false;}
-    if(x.check('k0i8ln',v)){el.querySelector('#fr').classList.add('open');x.sfx('unlock');
-     setTimeout(()=>x.voice('رسالة من كريم','«يا جماعة أنا مخبي التورتة عشان أعمل مفاجأة لصاحب عيد الميلاد وأحط عليها صورته وهو نايم… بس مكنتش متوقع إنكم تحولوا عيد الميلاد لقسم شرطة! وبالمناسبة أنا كنت هاكل حتة صغيرة بس»',{av:'🧑',onClose:()=>x.solve(0)}),1900);return true;}
+    if(v===x.gen.fridge){el.querySelector('#fr').classList.add('open');x.sfx('unlock');
+     setTimeout(()=>x.voice('رسالة من '+x.gen.thief,'«يا جماعة أنا مخبي التورتة عشان أعمل مفاجأة لصاحب عيد الميلاد وأحط عليها صورته وهو نايم… بس مكنتش متوقع إنكم تحولوا عيد الميلاد لقسم شرطة! وبالمناسبة أنا كنت هاكل حتة صغيرة بس»',{av:'🧑',onClose:()=>x.solve(0)}),1900);return true;}
     x.fail(el.querySelector('#fr'),el.querySelector('#m'),'التلاجة بتزنّ. الكود غلط.');return false;});
  }};
 OE.register({id:'cake',short:'التورتة',title:'قضية اختفاء تورتة عيد الميلاد',theme:'cake',color:'#e2457a',
  tagline:'الحفلة كمان ٢٠ دقيقة. والتورتة… مش موجودة.',minutes:20,players:'٣–٦ محققين',difficulty:4,cover,
  story:`<p>الحفلة هتبدأ كمان ٢٠ دقيقة، وصاحب عيد الميلاد في الطريق، لكن في كارثة… التورتة اختفت!</p><p style="margin-top:8px">آخر واحد شافها بيقول إنه سابها في مكانها، والباقيين كل واحد عنده رواية، وفي حد واضح إنه مخبي سر. اعرفوا مين، وإمتى، وفين.</p>`,
- rooms:[R1,R2,R3],
+ rooms:[R1,R2,R3], generate,
  winHTML:x=>`<span class="trophy">القضية اتحلت</span><h1>مبروك يا محققين!</h1><p class="lead">أنقذتوا عيد الميلاد قبل وصول صاحبه… بس في سؤال أهم من كل الأدلة: مين فيكم لحس الكريمة اللي على طبق التقديم؟</p>`,
- loseHTML:()=>`<h1>صاحب عيد الميلاد وصل</h1><p class="lead">الشمع منوّر… على طبق فاضي. والكل بيبص على كريم.</p>`,
+ loseHTML:x=>`<h1>صاحب عيد الميلاد وصل</h1><p class="lead">الشمع منوّر… على طبق فاضي. والكل بيبص على ${x.gen.thief||'بعض'}.</p>`,
 });
 document.getElementById('game-css').textContent+=css;
 })();

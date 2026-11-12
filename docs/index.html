@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="icon.svg">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
 </head>
 <body>
-<title>خمس أبواب</title>
+<title>DUCK</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,9 +17,9 @@
    In a game: sticky HUD (game · room track · evidence bag · clock), then one room at a time:
    header → goal → scene → answer → three 3D hint cards; the evidence bag keeps every clue card found. */
 :root{
-  --bg:#e8eaef;--surface:#f7f8fa;--ink:#1c2230;--muted:#5d6678;--line:#c9ced8;
-  --accent:#2350c8;--accent-ink:#fff;--hi:#ffe066;--hi-ink:#3a2f00;--alarm:#d7263d;--ok:#1f8a4c;
-  --paper:#fffdf6;--paper-ink:#262626;--glow:#2350c855;
+  --bg:#eef4f9;--surface:#fbfdff;--ink:#123a63;--muted:#56708c;--line:#c5d6e6;
+  --accent:#1f6fb5;--accent-ink:#fff;--hi:#f7b021;--hi-ink:#3a2500;--alarm:#d7263d;--ok:#1f8a4c;
+  --paper:#fffdf6;--paper-ink:#262626;--glow:#4a9ad455;
   --shadow:0 1px 2px rgba(20,30,50,.08),0 10px 28px rgba(20,30,50,.12);
   --f-display:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
@@ -26,12 +27,12 @@
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#121722;--surface:#1b2230;--ink:#e8ecf3;--muted:#9aa4b8;--line:#2e3747;
-  --accent:#6f95ff;--accent-ink:#0b1430;--hi:#f2d34f;--hi-ink:#2e2500;--alarm:#ff5a6e;--ok:#4cc982;
+  --bg:#0c1826;--surface:#132437;--ink:#e6f0fa;--muted:#93aac2;--line:#24405c;
+  --accent:#5fb0ea;--accent-ink:#06182a;--hi:#f7b021;--hi-ink:#2e2500;--alarm:#ff5a6e;--ok:#4cc982;
   --paper:#f3efe2;--paper-ink:#222;--glow:#6f95ff55;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.4);color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#121722;--surface:#1b2230;--ink:#e8ecf3;--muted:#9aa4b8;--line:#2e3747;
-  --accent:#6f95ff;--accent-ink:#0b1430;--hi:#f2d34f;--hi-ink:#2e2500;--alarm:#ff5a6e;--ok:#4cc982;
+  --bg:#0c1826;--surface:#132437;--ink:#e6f0fa;--muted:#93aac2;--line:#24405c;
+  --accent:#5fb0ea;--accent-ink:#06182a;--hi:#f7b021;--hi-ink:#2e2500;--alarm:#ff5a6e;--ok:#4cc982;
   --paper:#f3efe2;--paper-ink:#222;--glow:#6f95ff55;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.4);color-scheme:dark}
 /* single-look game worlds */
 :root[data-g="show"]{--bg:#0c0620;--surface:#1a1036;--ink:#fdf6ff;--muted:#b8a8d8;--line:#3a2a66;--accent:#ff3df2;--accent-ink:#1a0018;--hi:#ffd400;--hi-ink:#221a00;--alarm:#ff4d6d;--ok:#3dffb0;--paper:#fff7e0;--paper-ink:#221;--glow:#ff3df288;--f-display:"Lalezar","Bungee",sans-serif;color-scheme:dark}
@@ -86,7 +87,16 @@ a{color:var(--accent)}
 @keyframes enter{from{transform:perspective(900px) rotateX(8deg) translateY(14px);opacity:.3}to{transform:none;opacity:1}}
 
 /* ---------- HOME ---------- */
-.home-hero{display:flex;flex-direction:column;gap:10px;padding-block:28px 8px}
+.home-hero{display:flex;gap:26px;align-items:center;flex-wrap:wrap;padding-block:28px 8px}
+.home-hero .txt{display:flex;flex-direction:column;gap:8px;flex:1;min-width:240px}
+.brand{width:156px;flex:none;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(18,58,99,.25))}
+.brand svg,.hud-logo svg{display:block;width:100%;height:auto}
+@keyframes bob{50%{transform:translateY(-7px) rotate(-3deg)}}
+.hud-logo{width:38px;flex:none;display:block;transition:transform .3s}
+.hud-logo:hover{transform:rotate(-10deg) scale(1.1)}
+.pond{display:block;width:100%;height:26px;color:var(--accent);opacity:.5}
+.pond path{animation:pond 7s linear infinite}
+@keyframes pond{to{transform:translateX(-80px)}}
 .home-hero h1{font-size:clamp(2.6rem,8vw,4.6rem)}
 .doors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;perspective:1400px;margin-block:20px}
 .door-card{position:relative;border-radius:14px 14px 4px 4px;overflow:hidden;cursor:pointer;text-decoration:none;color:#fff;display:flex;flex-direction:column;min-height:330px;
@@ -379,7 +389,7 @@ a{color:var(--accent)}
 <div class="wrap" dir="rtl" lang="ar">
   <header class="hud" id="hud" hidden>
     <div class="hud-in">
-      <div class="hud-l"><span class="gname" id="hudGame"></span><span class="muted" id="hudTeam"></span><span class="gcode" id="hudCode" hidden></span></div>
+      <div class="hud-l"><a href="#" class="hud-logo" id="hudLogo" aria-label="DUCK · كل الألعاب"></a><span class="gname" id="hudGame"></span><span class="muted" id="hudTeam"></span><span class="gcode" id="hudCode" hidden></span></div>
       <div class="track" id="track"></div>
       <div class="hud-r">
         <button class="btn ghost sm bagbtn" id="hudBag" type="button">حقيبة الأدلة<span class="n" id="bagN">0</span></button>
@@ -406,6 +416,7 @@ function H(s){s='oe26|'+s;let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.char
 const fmt=sec=>{sec=Math.max(0,Math.floor(sec));return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')};
 const clockTime=ms=>{const d=new Date(ms);return [d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':')};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a};
+const RND={int:(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick:a=>a[Math.floor(Math.random()*a.length)],shuffle,digits:(n,lo=1,hi=9)=>shuffle(Array.from({length:hi-lo+1},(_,i)=>lo+i)).slice(0,n)};
 
 /* ---------- sound (synth, starts after a click) ---------- */
 let ac=null;
@@ -462,7 +473,7 @@ function curtain(small,title,mid){
 }
 const FX=(()=>{
   const c=document.getElementById('fx'),x=c.getContext('2d');let P=[],theme=null,raf=0,W=0,HH=0;
-  const CFG={home:{n:34,kind:'bokeh',cols:['#2350c8','#ff3df2','#e0a530','#7be0b0','#e2457a']},office:{n:22,kind:'paper',cols:['#2350c8','#e0b400','#8a93a5']},show:{n:70,kind:'spark',cols:['#ff3df2','#ffd400','#3dffb0','#ffffff']},
+  const CFG={home:{n:34,kind:'bokeh',cols:['#4a9ad4','#f5a623','#6bb6e6','#1f6fb5']},office:{n:22,kind:'paper',cols:['#1f6fb5','#f5a623','#8aa3ba']},show:{n:70,kind:'spark',cols:['#ff3df2','#ffd400','#3dffb0','#ffffff']},
     pharaoh:{n:110,kind:'sand',cols:['#e0a530','#f6e7c8','#c08a20']},priest:{n:30,kind:'fly',cols:['#7be0b0','#c9a0ff']},cake:{n:46,kind:'sprinkle',cols:['#e2457a','#ffb400','#5ac8fa','#3fbf7f','#b06cff']}};
   const size=()=>{W=c.width=innerWidth;HH=c.height=innerHeight};size();addEventListener('resize',size);
   function loop(){raf=requestAnimationFrame(loop);if(document.hidden)return;const cfg=CFG[theme],t=performance.now()/1000;x.clearRect(0,0,W,HH);
@@ -577,11 +588,13 @@ function onRoute(){
 window.addEventListener('hashchange',onRoute);
 
 /* ---------- HOME ---------- */
+const LOGO=mini=>`<svg viewBox="0 0 200 200" role="img" aria-label="DUCK"><circle cx="100" cy="100" r="94" fill="#fff" stroke="#4a9ad4" stroke-width="6"/><g transform="translate(0 ${mini?6:-20})"><path d="M50 108C45 92 53 83 58 82c4 13 16 17 34 16h26c22 0 32 14 26 28-4 10-18 14-44 14H80c-18 0-28-14-30-32z" fill="#f5a623" stroke="#123a63" stroke-width="4.5" stroke-linejoin="round"/><circle cx="128" cy="74" r="23" fill="#f5a623" stroke="#123a63" stroke-width="4.5"/><ellipse cx="124" cy="98" rx="15" ry="9" fill="#f5a623"/><circle cx="120" cy="68" r="3" fill="#123a63"/><circle cx="137" cy="68" r="3" fill="#123a63"/><path d="M115 79q13-8 27 0-4 11-13.500 11T115 79z" fill="#f0832a" stroke="#123a63" stroke-width="3.500" stroke-linejoin="round"/><path d="M70 112q16 17 38 6M77 103q11 10 26 6" fill="none" stroke="#123a63" stroke-width="4" stroke-linecap="round"/><path d="M36 140q10-9 20 0t20 0 20 0 20 0 20 0 20 0" fill="none" stroke="#123a63" stroke-width="4" stroke-linecap="round"/><path d="M50 151q10-9 20 0t20 0 20 0 20 0 20 0" fill="none" stroke="#6bb6e6" stroke-width="6" stroke-linecap="round"/></g>${mini?'':'<text x="100" y="176" text-anchor="middle" font-family="Baloo Bhaijaan 2,Arial Rounded MT Bold,system-ui,sans-serif" font-weight="800" font-size="42" fill="#134a7c" letter-spacing="1">DUCK</text>'}</svg>`;
 function home(){
   const app=$('#app');
   app.innerHTML=`<section class="scene-in stack" style="gap:22px">
-    <div class="home-hero"><span class="eyebrow">ألعاب هروب جماعية · افتحوا باب</span><h1>خمس أبواب</h1>
-      <p class="lead">كل باب لعبة كاملة: قصة، تلات غرف، وعدّاد. مفيش حد هيقولكم الحل. الأدلة متخبية في الغرف، والمساعدات بتتقلب واحدة واحدة وبتكلّفكم وقت.</p></div>
+    <div class="home-hero"><div class="brand">${LOGO()}</div><div class="txt"><span class="eyebrow">ألعاب هروب جماعية · خمس أبواب</span><h1 class="ltr" style="text-align:right">DUCK</h1>
+      <p class="lead">كل باب لعبة كاملة: قصة، تلات غرف، وعدّاد. مفيش حد هيقولكم الحل. الأدلة متخبية في الغرف، والمساعدات بتتقلب واحدة واحدة وبتكلّفكم وقت.</p></div></div>
+    <svg class="pond" viewBox="0 0 800 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0 13q20-12 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
     <div class="doors">${ORDER.map(id=>{const g=GAMES[id];return `<a class="door-card" href="#g-${id}" style="--dc:${g.color}">
       <span class="knob" aria-hidden="true"></span><div class="art">${g.cover}</div>
       <div class="info"><h3>${esc(g.title)}</h3><span class="tag">${esc(g.tagline)}</span>
@@ -600,7 +613,7 @@ function home(){
   const rb=$('#resumeBtn');if(rb)rb.onclick=()=>{const r=load();S=r;go('g-'+r.game);};
   renderBoard();
 }
-function resumeHTML(){const r=load();if(!r||!GAMES[r.game]||!['room'].includes(r.screen))return '';
+function resumeHTML(){const r=load();if(!r||!GAMES[r.game]||!['room'].includes(r.screen)||!r.gen)return '';
   return `<div class="panel row" style="justify-content:space-between"><span>في لعبة شغالة: <b>${esc(GAMES[r.game].title)}</b> · ${esc(r.team||'')}</span><button class="btn sm" id="resumeBtn" type="button">كمّلوا</button></div>`;}
 
 /* ---------- INTRO ---------- */
@@ -629,6 +642,7 @@ function intro(){
     try{localStorage.setItem('oe-setup',JSON.stringify({team,players,pen}))}catch(e){}
     S={game:g.id,team,players,penalty:pen,opt:g.readSetup?g.readSetup():{},minutes:g.minutes,startedAt:Date.now(),pen:0,
        screen:'room',room:0,roomAt:Date.now(),hints:{},bag:[],st:{},doneAt:0,submittedAt:0,winner:''};
+    S.gen=g.generate?g.generate():{};
     S.race=!!(g.isRace&&g.isRace(S.opt)); S.code=newCode(); chatJoin(S.code,team);
     sfx('drum'); save(); startTick(); render();
     if(g.opening)setTimeout(()=>g.opening(api()),500);
@@ -640,7 +654,7 @@ function api(){
   const R=rooms(), room=R[S.room], key=room.key;
   S.st[key]=S.st[key]||{};
   return {
-    st:S.st[key], run:S, all:S.st, H, digits, esc, shuffle, fmt, clockTime,
+    st:S.st[key], run:S, all:S.st, gen:S.gen||{}, H, digits, esc, shuffle, fmt, clockTime,
     check:(k,v)=>H(v)===k,
     solve(delay=900){S.hints[key]=S.hints[key]||0;setTimeout(()=>{if(S.room<R.length-1){const nx=R[S.room+1];curtain('الغرفة '+(S.room+2)+' من '+R.length,nx.title,()=>{S.room++;S.roomAt=Date.now();save();syncRace();render();window.scrollTo({top:0});});}else{S.doneAt=Date.now();S.screen='win';save();render();window.scrollTo({top:0});}},delay)},
     win(winner){S.winner=winner||'';S.doneAt=Date.now();S.screen='win';save();render();},
@@ -696,7 +710,7 @@ function endScreen(won){
   if(won&&endScreen.fired!==S.startedAt){endScreen.fired=S.startedAt;confetti();sfx('tada');}
   if(g.afterEnd)g.afterEnd(won,api0());
 }
-function api0(){return {run:S,esc,fmt,sfx,modal,voice,player:(i,fb)=>(S.players[i]||'').trim()||fb}}
+function api0(){return {run:S,gen:S.gen||{},esc,fmt,sfx,modal,voice,player:(i,fb)=>(S.players[i]||'').trim()||fb}}
 function confetti(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const c=$('#confetti');c.hidden=false;const x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
@@ -787,7 +801,7 @@ const RACE={joined:[],onWinner:null,
 };
 async function syncRace(){
   const db=DBX.db;if(!db||!S||!S.race||!S.code)return;
-  const R=rooms();const body={stage:R[S.room]?.key||'',last:S.room===R.length-1,hints:S.hints[R[R.length-1].key]||0,team:S.team};
+  const R=rooms();const body={stage:R[S.room]?.key||'',last:S.room===R.length-1,hints:S.hints[R[R.length-1].key]||0,team:S.team,...(G().raceInfo?{race:G().raceInfo(S,H)}:{})};
   const k=JSON.stringify(body);if(k===lastSync)return;lastSync=k;
   try{await db.doc('games/'+S.code).set(body);}catch(e){}
   if(raceSubs.code!==S.code){raceSubs.forEach(u=>u());raceSubs=[];raceSubs.code=S.code;
@@ -830,15 +844,15 @@ function chatUI(){
 /* ---------- boot ---------- */
 function register(g){GAMES[g.id]=g;ORDER.push(g.id);}
 function boot(){
-  const r=load(); if(r&&GAMES[r.game])S=r;
+  const r=load(); if(r&&GAMES[r.game]&&(r.screen!=='room'||r.gen))S=r;
   const hot=window.claude?.hot;
   hot?.snapshot?.(()=>({S}));
   const startUp=d=>{if(d&&d.S)S=d.S;onRoute();};
   hot?.ready?hot.ready(startUp):startUp(hot?.data??{});
-  $('#hudBag').onclick=bagModal;
+  $('#hudBag').onclick=bagModal;$('#hudLogo').innerHTML=LOGO(true);
   $('#chatFab').onclick=()=>{CHAT.open=true;chatUI();setTimeout(()=>{const i=$('#chatIn');i&&i.focus({preventScroll:true})},50);};
 }
-return {register,boot,H,esc,digits,sfx,prism,RACE,DBX,shuffle,get S(){return S},TAB};
+return {register,boot,H,esc,digits,sfx,prism,RACE,DBX,shuffle,RND,get S(){return S},TAB};
 })();
 </script>
 <script src="games/office.js"></script>

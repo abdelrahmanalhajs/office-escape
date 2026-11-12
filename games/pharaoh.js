@@ -52,7 +52,15 @@ const S={
 };
 const sym=(k,w)=>`<span class="ph-sym" ${w?`style="width:${w}px;height:${w}px"`:''}>${S[k]}</span>`;
 const cover=`<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M70 20h60l14 30-6 130H62l-6-130z" fill="#e0a530"/><path d="M70 20h60l14 30H56z" fill="#3fb6c8"/><rect x="78" y="56" width="44" height="40" rx="18" fill="#f2c88a"/><path d="M84 70h10M106 70h10" stroke="#1d140a" stroke-width="4" stroke-linecap="round"/><path d="M88 84q12 6 24 0" stroke="#1d140a" stroke-width="3" fill="none"/><path d="M92 96h16v28l-8 6-8-6z" fill="#3fb6c8"/><text x="100" y="168" text-anchor="middle" font-size="28">💤</text><text x="146" y="40" font-size="22" fill="#fff" font-family="Lalezar">Z</text><text x="160" y="24" font-size="16" fill="#fff" font-family="Lalezar">z</text></svg>`;
-const PAP=`<div class="ph-pap"><table><tr><td>${sym('sun',36)}</td><td>${sym('eye',36)}</td><td>${sym('scarab',36)}</td><td>${sym('wave',36)}</td></tr><tr><td>4</td><td>7</td><td>2</td><td>6</td></tr></table></div>`;
+const pap=g=>`<div class="ph-pap"><table><tr>${g.pord.map(k=>`<td>${sym(k,36)}</td>`).join('')}</tr><tr>${g.pord.map(k=>`<td>${g.vals[k]}</td>`).join('')}</tr></table></div>`;
+const PN={sun:'الشمس',eye:'العين',scarab:'الجعران',wave:'الموجة'};
+function generate(){
+  const R=OE.RND,keys=['sun','eye','scarab','wave'],d=R.digits(4,1,9),vals={};keys.forEach((k,i)=>vals[k]=d[i]);
+  const grid=[];keys.forEach(k=>{for(let i=0,n=R.int(3,6);i<n;i++)grid.push(k)});
+  const [f,r,c]=R.digits(3,1,9),[A,B,C,D]=R.shuffle(keys),mir=R.int(0,1),sol=mir?[D,C,B,A]:[A,B,C,D];
+  const cards=R.shuffle([`«رمز ${PN[D]} مباشرة على ${mir?'يسار':'يمين'} رمز ${PN[C]}.»`,`«رمز ${PN[B]} ليس في أي طرف.»`,`«رمز ${mir?PN[B]:PN[A]} يسبق رمز ${mir?PN[A]:PN[B]} عند القراءة من اليسار إلى اليمين.»`]);
+  return {vals,pord:R.shuffle(keys),grid:R.shuffle(grid),door:d.slice().sort((a,b)=>a-b).join(''),eq:[2*f,f+r,r+c],lock3:''+f+r+c,sol,cards,box:sol.slice().reverse().map(k=>vals[k]).join('')};
+}
 function spots(el,list,x,after){
   el.innerHTML=`<div class="scene" style="--cols:4">${list.map(s=>`<button class="spot ${x.st['f_'+s.id]?(s.card||s.piece?'found':'empty'):''}" type="button" data-s="${s.id}"><span style="font-size:2.2rem">${s.art}</span><span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=list.find(z=>z.id===b.dataset.s);const first=!x.st['f_'+s.id];x.st['f_'+s.id]=1;x.save();
@@ -68,7 +76,7 @@ const R1={key:'p1',title:'شفرة الحارس',short:'الحارس',goal:'اف
   const L=[{id:'p_jar',label:'جرة',art:'🏺',piece:1},{id:'p_anubis',label:'تمثال',art:'🗿',e:'التمثال بيبصلكم. بس كده.'},{id:'p_torch',label:'شعلة',art:'🔥',piece:1},{id:'p_sand',label:'كومة رمل',art:'⛰',piece:1},
     {id:'p_chest',label:'صندوق خشب',art:'🧰',e:'فاضي. حد سبقكم.'},{id:'p_crack',label:'شق في الحيطة',art:'🧱',piece:1},{id:'p_rug',label:'سجادة',art:'🟫',e:'تراب تلات آلاف سنة.'},{id:'p_cat',label:'تمثال قطة',art:'🐈‍⬛',e:'باستت نايمة. بلاش تصحّوها هي كمان.'}];
   const got=L.filter(s=>s.piece&&x.st['f_'+s.id]).length;
-  const grid=['eye','wave','sun','wave','scarab','eye','wave','sun','eye','wave','scarab','eye','sun','wave','eye','wave','eye','sun'];
+  const grid=x.gen.grid,PAP=pap(x.gen);
   el.innerHTML=`<div id="sc"></div>
    <div class="ph-wall stack"><div class="row" style="justify-content:space-between"><b>قطع البردية: ${got} من 4</b>${got===4&&!x.st.asm?'<button class="btn sm" id="asm" type="button">ركّبوا البردية</button>':''}</div><div id="pap"></div></div>
    <div class="ph-wall stack"><div class="ph-insc">«الترتيب الصح دايمًا صح كده كده»</div><div class="ph-grid">${grid.map((k,i)=>`<span class="ph-sym" style="animation-delay:${i*.04}s">${S[k]}</span>`).join('')}</div>
@@ -78,14 +86,14 @@ const R1={key:'p1',title:'شفرة الحارس',short:'الحارس',goal:'اف
   const a=el.querySelector('#asm');if(a)a.onclick=()=>{x.sfx('magic');el.querySelector('#pap').innerHTML=`<div class="ph-assemble">${'<div class="pc"></div>'.repeat(4)}</div>`;
     setTimeout(()=>{x.st.asm=1;x.bag.add('p_pap','البردية',PAP,'📜');x.rerender();},1700);};
   el.querySelector('#lk').innerHTML=x.lockHTML('lkp1',4,{label:'باب الحارس'});
-  x.wireLock('lkp1',4,v=>{if(x.check('quwoa2',v)){x.sfx('stone');x.good(el.querySelector('#m'),'الباب بيتزحزح…');setTimeout(()=>x.voice('صوت من جوه الحيطة','«خدوا البردية معاكم… آخر باب بيتكلم نفس اللغة.»',{av:'𓂀',onClose:()=>x.solve(100)}),900);return true;}x.fail(el.querySelector('.ph-grid'),el.querySelector('#m'),'الرموز اتطفت. الباب مش موافق.');return false;});
+  x.wireLock('lkp1',4,v=>{if(v===x.gen.door){x.sfx('stone');x.good(el.querySelector('#m'),'الباب بيتزحزح…');setTimeout(()=>x.voice('صوت من جوه الحيطة','«خدوا البردية معاكم… آخر باب بيتكلم نفس اللغة.»',{av:'𓂀',onClose:()=>x.solve(100)}),900);return true;}x.fail(el.querySelector('.ph-grid'),el.querySelector('#m'),'الرموز اتطفت. الباب مش موافق.');return false;});
  }};
 const TAB=(a,b,n)=>`<div class="ph-tab">${sym(a)}<span>+</span>${sym(b)}<span>=</span><span>${n}</span></div>`;
 const R2={key:'p2',title:'ميزان الفرعون',short:'الميزان',goal:'عدّوا اختبار الميزان وافتحوا غرفة العرش.',
  hints:['نفس الرسمة ليها نفس القيمة في كل لوح.','ابدأوا باللوح اللي فيه رسمة واحدة مكررة.',{prism:[sym('feather',30),'→',sym('ruby',30),'→ '+sym('crown',24)],text:'كل قيمة تعرفوها بتفتح اللوح اللي بعده.'}],
  render(el,x){
-  const L=[{id:'p_t1',label:'تحت التمثال',art:'🗿',card:TAB('feather','feather',6),t:'لوح ١',icon:'🪨'},{id:'p_t2',label:'ورا الستارة',art:'🎭',card:TAB('feather','ruby',8),t:'لوح ٢',icon:'🪨'},
-    {id:'p_t3',label:'جوه التابوت الصغير',art:'⚱',card:TAB('ruby','crown',9),t:'لوح ٣',icon:'🪨'},{id:'p_v',label:'مزهرية',art:'🏺',e:'فيها ورد ناشف.'},{id:'p_s',label:'درع',art:'🛡',e:'تقيل جدًا.'},{id:'p_m',label:'مومياء صغيرة',art:'🩹',e:'قطة؟ ولا كلب؟ مش وقته.'}];
+  const L=[{id:'p_t1',label:'تحت التمثال',art:'🗿',card:TAB('feather','feather',x.gen.eq[0]),t:'لوح ١',icon:'🪨'},{id:'p_t2',label:'ورا الستارة',art:'🎭',card:TAB('feather','ruby',x.gen.eq[1]),t:'لوح ٢',icon:'🪨'},
+    {id:'p_t3',label:'جوه التابوت الصغير',art:'⚱',card:TAB('ruby','crown',x.gen.eq[2]),t:'لوح ٣',icon:'🪨'},{id:'p_v',label:'مزهرية',art:'🏺',e:'فيها ورد ناشف.'},{id:'p_s',label:'درع',art:'🛡',e:'تقيل جدًا.'},{id:'p_m',label:'مومياء صغيرة',art:'🩹',e:'قطة؟ ولا كلب؟ مش وقته.'}];
   const found=['p_t1','p_t2','p_t3'].filter(k=>x.st['f_'+k]);
   el.innerHTML=`<svg class="ph-scale ${x.st.ok?'ok':''}" viewBox="0 0 260 150" aria-hidden="true"><rect x="125" y="40" width="10" height="100" fill="#c08a20"/><rect x="90" y="138" width="80" height="10" rx="3" fill="#c08a20"/><g class="beam"><rect x="30" y="36" width="200" height="8" rx="4" fill="#e0a530"/><path d="M40 44l-18 40h36zM220 44l-18 40h36z" fill="none" stroke="#e0a530" stroke-width="2"/><ellipse cx="40" cy="86" rx="22" ry="5" fill="#e0a530"/><ellipse cx="220" cy="86" rx="22" ry="5" fill="#e0a530"/><path d="M40 70q8-16 0-26q-8 10 0 26" fill="#f6e7c8"/></g><circle cx="130" cy="38" r="8" fill="#3fb6c8"/></svg>
    <div id="sc"></div>
@@ -96,17 +104,17 @@ const R2={key:'p2',title:'ميزان الفرعون',short:'الميزان',goal
   spots(el.querySelector('#sc'),L,x,()=>x.rerender());
   ['feather','ruby','crown'].forEach(k=>{const s=el.querySelector('#v_'+k);if(x.st['v_'+k]===undefined)s.value='0';s.onchange=()=>{x.st['v_'+k]=s.value;x.save();x.sfx('click');};});
   el.querySelector('#go').onclick=()=>{const v=['feather','ruby','crown'].map(k=>el.querySelector('#v_'+k).value).join('');
-    if(x.check('117svn5',v)){x.st.ok=1;x.save();el.querySelector('.ph-scale').classList.add('ok');x.sfx('stone');setTimeout(()=>x.voice('الفرعون (بيتمتم)','«هو لازم كل الدوشة دي عشان الواحد يعرف ينام؟»',{av:'😴',onClose:()=>x.solve(100)}),1300);}
+    if(v===x.gen.lock3){x.st.ok=1;x.save();el.querySelector('.ph-scale').classList.add('ok');x.sfx('stone');setTimeout(()=>x.voice('الفرعون (بيتمتم)','«هو لازم كل الدوشة دي عشان الواحد يعرف ينام؟»',{av:'😴',onClose:()=>x.solve(100)}),1300);}
     else x.fail(el.querySelector('.ph-lock3'),el.querySelector('#m'),'الميزان مال. الفرعون اتقلب في نومه.');};
  }};
 const ORDER=['sun','eye','scarab','wave'];
 const R3={key:'p3',title:'رجّعوا الحماية',short:'الختم',goal:'رتّبوا رموز الحماية على المذبح، وافتحوا صندوق ختم النوم.',
- hints:['الشمس مكانها محدود أكتر من أي رمز.','العين والجعران لازم يقفوا جنب بعض.',{prism:['١','٢','٣','٤'],text:'بعد الترتيب، الوصية بتتقرا من اليمين. والبردية لسه في الحقيبة.'}],
+ hints:['في رمز واحد ممنوع من الطرفين. ابدأوا بيه.','في رمزين لازم يقفوا جنب بعض. اعتبروهم قطعة واحدة.',{prism:['١','٢','٣','٤'],text:'بعد الترتيب، الوصية بتتقرا من اليمين. والبردية لسه في الحقيبة.'}],
  render(el,x){
   x.st.slots=x.st.slots||[null,null,null,null];
-  const L=[{id:'p_c1',label:'ورا الشعلة',art:'🔥',card:'<div class="card"><p class="hand">«العين مباشرة على يمين الجعران.»</p></div>',t:'بطاقة ١',icon:'📜'},
-    {id:'p_c2',label:'تحت السجادة',art:'🟫',card:'<div class="card"><p class="hand">«الشمس ليست في أي طرف.»</p></div>',t:'بطاقة ٢',icon:'📜'},
-    {id:'p_c3',label:'بُق التمثال',art:'🗿',card:'<div class="card"><p class="hand">«الموجة تسبق الشمس عند القراءة من اليسار إلى اليمين.»</p></div>',t:'بطاقة ٣',icon:'📜'},
+  const L=[{id:'p_c1',label:'ورا الشعلة',art:'🔥',card:'<div class="card"><p class="hand">'+x.gen.cards[0]+'</p></div>',t:'بطاقة ١',icon:'📜'},
+    {id:'p_c2',label:'تحت السجادة',art:'🟫',card:'<div class="card"><p class="hand">'+x.gen.cards[1]+'</p></div>',t:'بطاقة ٢',icon:'📜'},
+    {id:'p_c3',label:'بُق التمثال',art:'🗿',card:'<div class="card"><p class="hand">'+x.gen.cards[2]+'</p></div>',t:'بطاقة ٣',icon:'📜'},
     {id:'p_x1',label:'عمود',art:'🏛',e:'نقوش عن حفلة قديمة.'},{id:'p_x2',label:'قارب صغير',art:'🛶',e:'قارب الشمس. ناقصه مجداف.'},{id:'p_x3',label:'سلة',art:'🧺',e:'تمر عمره تلات آلاف سنة. لا.'}];
   if(x.st.arranged)return box(el,x);
   el.innerHTML=`<div id="sc"></div>
@@ -118,7 +126,7 @@ const R3={key:'p3',title:'رجّعوا الحماية',short:'الختم',goal:'
   spots(el.querySelector('#sc'),L,x);
   el.querySelectorAll('.ph-piece').forEach(b=>b.onclick=()=>{if(x.st.slots.includes(b.dataset.k))return;x.st.sel=b.dataset.k;x.sfx('click');x.rerender();});
   el.querySelectorAll('.ph-slot').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(x.st.slots[i]){x.st.slots[i]=null;}else if(x.st.sel){x.st.slots[i]=x.st.sel;x.st.sel=null;x.sfx('stone');}x.rerender();});
-  el.querySelector('#go').onclick=()=>{if(x.check('1n4f9jf',x.st.slots.join(','))){x.st.arranged=1;x.sfx('magic');x.rerender();}else{x.fail(el.querySelector('.ph-altar'),el.querySelector('#m'),'الرموز بتنطفي واحد ورا التاني…');}};
+  el.querySelector('#go').onclick=()=>{if(x.st.slots.join(',')===x.gen.sol.join(',')){x.st.arranged=1;x.sfx('magic');x.rerender();}else{x.fail(el.querySelector('.ph-altar'),el.querySelector('#m'),'الرموز بتنطفي واحد ورا التاني…');}};
  }};
 function box(el,x){
   const W='<div class="card"><p class="hand">«ارجعوا للبردية. ابدأوا بالرمز الموجود أقصى اليمين، ثم تحرّكوا خانة خانة نحو اليسار. أرقام الرموز تفتح صندوق ختم النوم.»</p></div>';
@@ -128,7 +136,7 @@ function box(el,x){
    <div class="row" style="justify-content:center"><div id="lk"></div></div><div class="msg" id="m" style="text-align:center"></div><div id="end"></div>`;
   const o=el.querySelector('#oe');if(o)o.onclick=()=>{el.querySelector('#env').classList.add('open');x.sfx('whoosh');x.bag.add('p_will','وصية الفرعون',W,'✉');setTimeout(()=>{x.st.envOpen=1;x.rerender();},1000);};
   el.querySelector('#lk').innerHTML=x.lockHTML('lkp3',4,{label:'صندوق ختم النوم'});
-  x.wireLock('lkp3',4,v=>{if(x.check('1pp7cxw',v)){x.sfx('unlock');el.querySelector('#end').innerHTML=`<svg class="ph-coffin" viewBox="0 0 200 160" aria-hidden="true"><path d="M60 150l-10-90q0-50 50-50t50 50l-10 90z" fill="#e0a530"/><rect x="80" y="40" width="40" height="34" rx="14" fill="#f2c88a"/><g class="sl"><circle cx="100" cy="110" r="16" fill="#3fb6c8"/><text x="100" y="116" text-anchor="middle" font-size="16">𓂀</text></g></svg>`;
+  x.wireLock('lkp3',4,v=>{if(v===x.gen.box){x.sfx('unlock');el.querySelector('#end').innerHTML=`<svg class="ph-coffin" viewBox="0 0 200 160" aria-hidden="true"><path d="M60 150l-10-90q0-50 50-50t50 50l-10 90z" fill="#e0a530"/><rect x="80" y="40" width="40" height="34" rx="14" fill="#f2c88a"/><g class="sl"><circle cx="100" cy="110" r="16" fill="#3fb6c8"/><text x="100" y="116" text-anchor="middle" font-size="16">𓂀</text></g></svg>`;
     setTimeout(()=>x.voice('الفرعون','«أخيرًا… مين اللي سمح لكم تدخلوا مقبرتي أصلًا؟! اقفلوا الباب وراكم. ومن غير رزع.»',{av:'😴',onClose:()=>x.solve(0)}),1700);return true;}
     x.fail(el.querySelector('#lkp3'),el.querySelector('#m'),'الصندوق ما اتحركش. الفرعون بيكح.');return false;});
 }
@@ -136,7 +144,7 @@ OE.register({id:'pharaoh',short:'الفرعون',title:'ممنوع إزعاج ا
  tagline:'حد لمس التابوت. والفرعون صحي… وهو مش طايق نفسه.',minutes:20,players:'٣–٦ لاعبين',difficulty:3,cover,
  story:`<p>دخلتوا مقبرة قديمة، وحد من الفريق لمس التابوت. فجأة اشتغل إنذار المقبرة وصحي الفرعون… وهو آخر حاجة كان محتاجها حد يصحّيه.</p><p style="margin-top:8px">ختم النوم محبوس في صندوق جوه غرفة العرش. رجّعوه مكانه قبل الوقت ما يخلص.</p>`,
  opening:x=>x.voice('الفرعون','«مين اللي بيخبط؟! أنا نايم من تلات آلاف سنة! قدامكم عشرين دقيقة ترجعوا ختم النوم لمكانه… قبل ما أصحصح وأحكيلكم تاريخ مصر كله!»',{av:'😠',btn:'حاضر'}),
- rooms:[R1,R2,R3],
+ rooms:[R1,R2,R3], generate,
  winHTML:x=>`<span class="trophy">الفرعون نام</span><h1>ختم النوم رجع مكانه</h1><p class="lead">العدّاد وقف، والإنذار هدي، والمقبرة رجعت ساكتة. ${OE.esc(x.run.team)} خرجوا على أطراف صوابعهم.</p>`,
  loseHTML:()=>`<h1>الفرعون صحصح</h1><p class="lead">«خلاص… طالما صحيتوني، نبدأ من الأسرة الأولى!»</p>`,
 });

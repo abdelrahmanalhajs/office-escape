@@ -74,6 +74,19 @@ const ART={
 };
 const cover=`<svg viewBox="0 0 200 200" aria-hidden="true"><rect x="30" y="40" width="140" height="92" rx="8" fill="#22262f"/><rect x="40" y="50" width="120" height="72" rx="3" fill="#2f5fb8"/><rect x="18" y="132" width="164" height="12" rx="6" fill="#c9ced8"/><circle cx="100" cy="78" r="14" fill="#ffffff33"/><rect x="74" y="98" width="52" height="9" rx="4" fill="#ffffff55"/><g transform="translate(120 20) rotate(12)"><rect width="56" height="38" rx="3" fill="#ffe066"/><path d="M0 0l28 20 28-20" fill="none" stroke="#c9a43c" stroke-width="3"/></g><text x="100" y="178" text-anchor="middle" font-size="22" fill="#fff" font-family="IBM Plex Mono">Re: Re: Fwd</text></svg>`;
 
+const FLW=['','الأول','التاني','التالت','الرابع','الخامس','السادس','السابع','التامن','التاسع'];
+const BR=['أرض الجولف','المعادي','المهندسين'],DP=['المشروعات','الحسابات','الموارد البشرية'],DV=['A','B','C'];
+const PN={omar:'عمر',salma:'سلمى',ziad:'زياد'};
+function generate(){
+  const R=OE.RND,[a,b,c,d]=R.digits(4,1,9),oth=R.shuffle([1,2,3,4,5,6,7,8,9].filter(n=>![a,b,c,d].includes(n)));
+  const fl=R.shuffle([1,2,3,4,5,6,7,8,9].filter(n=>n!==b)).slice(0,2);
+  const fax={br:R.digits(3,10,99),dp:R.digits(3,10,99),dv:R.digits(3,10,99),bi:R.int(0,2),di:R.int(0,2),vi:R.int(0,2)};
+  const [X,Y,Z]=R.shuffle(['omar','salma','ziad']);
+  const digs=[a,b,c,d],mx=Math.max(...digs),pos=R.shuffle([0,1,2,3]),[u,v,w]=R.shuffle(digs.filter(n=>n!==mx)),t=[];
+  t[pos[0]]=mx;t[pos[1]]=u;t[pos[2]]=v;t[pos[3]]=w;
+  const rules=R.shuffle([`الخانة ${pos[0]+1} فيها أكبر رقم من الأربعة.`,`مجموع الخانة ${pos[1]+1} والخانة ${pos[2]+1} يساوي ${u+v}.`,`رقم الخانة ${pos[1]+1} ${u<v?'أصغر':'أكبر'} من رقم الخانة ${pos[2]+1}.`]);
+  return {pw:''+a+b+c+d,a,b,c,d,visitor:oth[0],dr:[oth[1],oth[2]],fl,fax,faxAns:''+fax.br[fax.bi]+fax.dp[fax.di]+fax.dv[fax.vi],key:{X,Y,Z},race:{digs:R.shuffle(digs),rules,ans:t.join('')}};
+}
 function spots(el,list,x,onFind){
   el.innerHTML=`<div class="scene" style="--cols:${list.length>6?4:3}">${list.map(s=>`<button class="spot ${x.st['f_'+s.id]?(s.card?'found':'empty'):''}" type="button" data-s="${s.id}">${s.art}<span class="lbl">${s.label}</span></button>`).join('')}</div>`;
   el.querySelectorAll('.spot').forEach(b=>b.onclick=()=>{const s=list.find(z=>z.id===b.dataset.s);
@@ -97,24 +110,25 @@ const R1={key:'r1',title:'مكتب مروان',short:'المكتب',goal:'لاب
   <div><b>المكتب</b><p class="muted" style="font-size:.9rem">دوسوا على أي حاجة تبصّوا عليها.</p></div><div id="sc"></div>`;
   el.querySelector('#lk').innerHTML=x.lockHTML('lk1',4);
   spots(el.querySelector('#sc'),[
-   {id:'o_cards',label:'حافظة الكروت',art:ART.holder,cardTitle:'كارت جراج',icon:'🅿',card:`<div class="card"><table><tr><td>كارت جراج الموظفين</td><td></td></tr><tr><td>الاسم</td><td>مروان</td></tr><tr><td>المكان</td><td class="mono ltr">P6</td></tr></table></div>`},
-   {id:'o_bin',label:'سلة المهملات',art:ART.bin,cardTitle:'تذكرة جراج قديمة',icon:'🎫',card:`<div class="card"><table><tr><td>تذكرة زائر</td><td></td></tr><tr><td>المكان</td><td class="mono ltr">P4</td></tr><tr><td>التاريخ</td><td>الشهر اللي فات</td></tr></table></div>`},
-   {id:'o_dir',label:'كومة ملفات',art:ART.book,cardTitle:'دليل المبنى',icon:'🏢',card:`<div class="card"><table><tr><td>الاستقبال</td><td>الأرضي</td></tr><tr><td>الحسابات</td><td>الأول</td></tr><tr><td>المشروعات · مروان</td><td>التاني</td></tr><tr><td>الموارد البشرية</td><td>الخامس</td></tr></table></div>`},
-   {id:'o_plate',label:'طرف المكتب',art:ART.sign,cardTitle:'لوحة المكتب',icon:'🪧',card:`<div class="card" style="text-align:center"><span class="mono" style="background:#c9a43c;color:#2a1d00;padding:.2em .8em;border-radius:4px;font-weight:700;font-size:1.3rem">DESK 7</span></div>`},
-   {id:'o_drawers',label:'أدراج المكتب',art:ART.drawer,cardTitle:'الأدراج',icon:'🗄',card:`<div class="card"><table><tr><td>درج الشواحن</td><td class="mono">1</td></tr><tr><td>درج الملفات</td><td class="mono">5</td></tr><tr><td>درج الأوراق</td><td class="mono">3</td></tr></table></div>`},
+   {id:'o_cards',label:'حافظة الكروت',art:ART.holder,cardTitle:'كارت جراج',icon:'🅿',card:`<div class="card"><table><tr><td>كارت جراج الموظفين</td><td></td></tr><tr><td>الاسم</td><td>مروان</td></tr><tr><td>المكان</td><td class="mono ltr">P${x.gen.a}</td></tr></table></div>`},
+   {id:'o_bin',label:'سلة المهملات',art:ART.bin,cardTitle:'تذكرة جراج قديمة',icon:'🎫',card:`<div class="card"><table><tr><td>تذكرة زائر</td><td></td></tr><tr><td>المكان</td><td class="mono ltr">P${x.gen.visitor}</td></tr><tr><td>التاريخ</td><td>الشهر اللي فات</td></tr></table></div>`},
+   {id:'o_dir',label:'كومة ملفات',art:ART.book,cardTitle:'دليل المبنى',icon:'🏢',card:`<div class="card"><table><tr><td>الاستقبال</td><td>الأرضي</td></tr>${x.shuffle([['الحسابات',x.gen.fl[0]],['المشروعات · مروان',x.gen.b],['الموارد البشرية',x.gen.fl[1]]]).sort((p,q)=>p[1]-q[1]).map(r=>`<tr><td>${r[0]}</td><td>${FLW[r[1]]}</td></tr>`).join('')}</table></div>`},
+   {id:'o_plate',label:'طرف المكتب',art:ART.sign,cardTitle:'لوحة المكتب',icon:'🪧',card:`<div class="card" style="text-align:center"><span class="mono" style="background:#c9a43c;color:#2a1d00;padding:.2em .8em;border-radius:4px;font-weight:700;font-size:1.3rem">DESK ${x.gen.c}</span></div>`},
+   {id:'o_drawers',label:'أدراج المكتب',art:ART.drawer,cardTitle:'الأدراج',icon:'🗄',card:`<div class="card"><table>${[['درج الشواحن',x.gen.dr[0]],['درج الملفات',x.gen.dr[1]],['درج الأوراق',x.gen.d]].sort((p,q)=>p[1]-q[1]).map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td></tr>`).join('')}</table></div>`},
    {id:'o_phone',label:'الموبايل',art:ART.phone,empty:'الموبايل فاصل شحن. زي ما الورقة قالت.'},
    {id:'o_mug',label:'كوباية',art:ART.mug,empty:'قهوة باردة من امبارح.'},
    {id:'o_cool',label:'كولدير',art:ART.cooler,empty:'مية. بس.'},
   ],x);
-  x.wireLock('lk1',4,v=>{if(x.check('b700ux',v)){x.good(el.querySelector('#m'),'اتفتح...');x.sfx('unlock');setTimeout(()=>{x.st.unlocked=1;x.rerender();},800);return true;}x.fail(el.querySelector('#scr'),el.querySelector('#m'),'الباسورد غلط.');return false;});
+  x.wireLock('lk1',4,v=>{if(v===x.gen.pw){x.good(el.querySelector('#m'),'اتفتح...');x.sfx('unlock');setTimeout(()=>{x.st.unlocked=1;x.rerender();},800);return true;}x.fail(el.querySelector('#scr'),el.querySelector('#m'),'الباسورد غلط.');return false;});
  }};
+const dest=x=>`الجهة: إدارة ${DP[x.gen.fax.di]}، فرع ${BR[x.gen.fax.bi]}، جهاز الفاكس ${DV[x.gen.fax.vi]}.`;
 function mail(el,x){
   el.innerHTML=`<div class="mail flipin"><nav class="mail-side"><span class="on">الوارد (1)</span><span>المرسل</span><span>مسودات (14)</span></nav><div class="mail-body">
     <article class="mi"><div class="mh"><span>من: مروان ← الإدارة</span><span class="pill">اتبعت</span></div><b>الملف النهائي</b><p class="muted">FINAL_final_v3.pdf</p></article>
     <article class="mi urgent"><div class="mh"><span>Re: الملف النهائي</span><span class="pill red">مطلوب فاكس</span></div>
-    <p>شكرًا، استلمنا الميل. برجاء إرسال نسخة من الميل والمرفق بالفاكس للاعتماد.</p><p style="margin-top:6px">الجهة: إدارة المشروعات، فرع أرض الجولف، جهاز الفاكس B.</p><p class="muted" style="margin-top:6px">دليل الأرقام موجود في غرفة الفاكس.</p></article></div></div>
+    <p>شكرًا، استلمنا الميل. برجاء إرسال نسخة من الميل والمرفق بالفاكس للاعتماد.</p><p style="margin-top:6px">${dest(x)}</p><p class="muted" style="margin-top:6px">دليل الأرقام موجود في غرفة الفاكس.</p></article></div></div>
   <div class="row"><button class="btn big" id="pr" type="button">خدوا المستند من صينية الطباعة</button></div>`;
-  x.bag.add('o_reply','رد الإدارة','<div class="card"><p>شكرًا، استلمنا الميل. برجاء إرسال نسخة من الميل والمرفق بالفاكس للاعتماد.</p><p style="margin-top:6px">الجهة: إدارة المشروعات، فرع أرض الجولف، جهاز الفاكس B.</p></div>','✉');
+  x.bag.add('o_reply','رد الإدارة','<div class="card"><p>شكرًا، استلمنا الميل. برجاء إرسال نسخة من الميل والمرفق بالفاكس للاعتماد.</p><p style="margin-top:6px">'+dest(x)+'</p></div>','✉');
   el.querySelector('#pr').onclick=()=>{x.bag.add('o_doc','المستند المطبوع','<div class="card">نسخة مطبوعة من الميل والمرفق. ٢ صفحة.</div>','📄');x.solve(300);};
 }
 const R2={key:'r2',title:'غرفة الفاكس',short:'الفاكس',goal:'ابعتوا المستند للجهة الصح.',
@@ -131,16 +145,16 @@ const R2={key:'r2',title:'غرفة الفاكس',short:'الفاكس',goal:'اب
    <div id="lk"></div></div>`;
   el.querySelector('#lk').innerHTML=x.lockHTML('lk2',6,{label:'رقم الوجهة'});
   spots(el.querySelector('#sc'),[
-   {id:'o_br',label:'درج الاستقبال',art:ART.paper,cardTitle:'دليل الفروع',icon:'🏬',card:`<div class="card"><table><tr><td>أرض الجولف</td><td class="mono">24</td></tr><tr><td>المعادي</td><td class="mono">17</td></tr><tr><td>المهندسين</td><td class="mono">53</td></tr></table></div>`},
-   {id:'o_dp',label:'لوحة الملاحظات',art:ART.board,cardTitle:'دليل الإدارات',icon:'📌',card:`<div class="card"><table><tr><td>المشروعات</td><td class="mono">86</td></tr><tr><td>الحسابات</td><td class="mono">40</td></tr><tr><td>الموارد البشرية</td><td class="mono">62</td></tr></table></div>`},
-   {id:'o_dv',label:'ملف الصيانة',art:ART.file,cardTitle:'ورقة الأجهزة',icon:'🔧',card:`<div class="card"><table><tr><td>A</td><td class="mono">12</td></tr><tr><td>B</td><td class="mono">31</td></tr><tr><td>C</td><td class="mono">09</td></tr></table></div>`},
+   {id:'o_br',label:'درج الاستقبال',art:ART.paper,cardTitle:'دليل الفروع',icon:'🏬',card:`<div class="card"><table>${BR.map((n,i)=>`<tr><td>${n}</td><td class="mono">${x.gen.fax.br[i]}</td></tr>`).join('')}</table></div>`},
+   {id:'o_dp',label:'لوحة الملاحظات',art:ART.board,cardTitle:'دليل الإدارات',icon:'📌',card:`<div class="card"><table>${DP.map((n,i)=>`<tr><td>${n}</td><td class="mono">${x.gen.fax.dp[i]}</td></tr>`).join('')}</table></div>`},
+   {id:'o_dv',label:'ملف الصيانة',art:ART.file,cardTitle:'ورقة الأجهزة',icon:'🔧',card:`<div class="card"><table>${DV.map((n,i)=>`<tr><td>${n}</td><td class="mono">${x.gen.fax.dv[i]}</td></tr>`).join('')}</table></div>`},
    {id:'o_pr2',label:'الطابعة',art:ART.printer,empty:'فاضية. الورق خلص من سنة.'},
    {id:'o_cl2',label:'كولدير',art:ART.cooler,empty:'حد كاتب عليه: "ممنوع الفاكس جنب المية".'},
    {id:'o_bin2',label:'سلة',art:ART.bin,empty:'إيصالات فاكس قديمة كلها "فشل".'},
   ],x);
   el.querySelector('#tray').onclick=()=>{if(!x.bag.has('o_doc')){x.toast('مفيش مستند معاكم.');return;}x.st.tray=1;x.sfx('click');x.rerender();};
   x.wireLock('lk2',6,v=>{const m=el.querySelector('#m');if(!x.st.tray){x.fail(el.querySelector('#tray'),m,'الصينية فاضية.');return false;}
-    if(x.check('1a123s3',v)){x.good(m,'جاري الإرسال...');setTimeout(()=>{x.st.sent=1;x.rerender();},900);return true;}x.fail(el.querySelector('#lk2'),m,'الرقم ده مش بتاع الجهة المطلوبة.');return false;});
+    if(v===x.gen.faxAns){x.good(m,'جاري الإرسال...');setTimeout(()=>{x.st.sent=1;x.rerender();},900);return true;}x.fail(el.querySelector('#lk2'),m,'الرقم ده مش بتاع الجهة المطلوبة.');return false;});
  }};
 function sent(el,x){
   el.innerHTML=`<div class="receipt">TRANSMISSION REPORT\n------------------------\nPAGES   : 2\nTIME    : ${x.clockTime(Date.now())}\nRESULT  : OK</div>
@@ -150,9 +164,10 @@ function sent(el,x){
 }
 const R3A={key:'r3a',title:'الميتينج روم: المفتاح مع مين؟',short:'الميتينج',goal:'الباب مقفول والمفتاح مع واحد من التلاتة. اثبتوا مين قبل ما تفتحوا أي مظروف.',
  hints:['إفادة واحدة بس صح. مش اتنين، ومش ولا واحدة.','افترضوا. لكل افتراض عدّوا الإفادات الصح.',
-  {prism:['عمر؟','سلمى؟','زياد؟','= ١'],text:'لو المفتاح مع سلمى، كام إفادة بتبقى صح؟ ولو مع زياد؟'}],
+  {prism:['عمر؟','سلمى؟','زياد؟','= ١'],text:'جرّبوا كل اسم من التلاتة، وعدّوا الإفادات الصح في كل مرة.'}],
  render(el,x){
-  const P=[{id:'omar',n:'عمر',s:'المفتاح مع سلمى',p:0},{id:'salma',n:'سلمى',s:'المفتاح مش معايا',p:1},{id:'ziad',n:'زياد',s:'المفتاح مش مع عمر',p:2}];
+  const K=x.gen.key,say=id=>id===K.X?'المفتاح مع '+PN[K.Y]:id===K.Y?'المفتاح مش معايا':'المفتاح مش مع '+PN[K.X];
+  const P=['omar','salma','ziad'].map((id,i)=>({id,n:PN[id],s:say(id),p:i}));
   x.st.tf=x.st.tf||{};
   el.innerHTML=`<div class="card"><b>تقرير العهدة</b><p>المفتاح مش ضايع؛ عهدة مع واحد من التلاتة اللي معاهم مظاريف. ملحوظة: إفادة واحدة فقط من الإفادات التلاتة صحيحة.</p><p class="muted" style="margin-top:6px">المظروف مش هيتفتح غير لما تقدموا استنتاج كامل: صاحب المفتاح، وكل إفادة صح ولا غلط.</p></div>
   <div class="envs">${P.map(p=>`<div class="who ${x.st.pick===p.id?'pick':''}"><div class="row"><span class="face">${p.n[0]}</span><div><b>${p.n}</b>${x.player(p.p,'')?`<div class="muted" style="font-size:.8rem">بيلعبه: ${esc(x.player(p.p,''))}</div>`:''}</div></div>
@@ -166,31 +181,30 @@ const R3A={key:'r3a',title:'الميتينج روم: المفتاح مع مين�
   el.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{x.st.pick=b.dataset.p;x.rerender();});
   el.querySelector('#sub').onclick=()=>{const m=el.querySelector('#m');
     if(!x.st.pick||P.some(p=>x.st.tf[p.id]===undefined)){x.fail(null,m,'الاستنتاج ناقص: اختاروا صاحب المفتاح وقيّموا التلات إفادات.');return;}
-    const k=x.st.pick+'|'+P.map(p=>x.st.tf[p.id]).join('');
-    if(x.check('ssv8z5',k)){const e=el.querySelector('#env_'+x.st.pick);e.classList.add('open');x.sfx('unlock');x.good(m,'المفتاح جوه!');x.solve(1800);}
+    if(x.st.pick===K.X&&x.st.tf[K.X]===0&&x.st.tf[K.Y]===1&&x.st.tf[K.Z]===0){const e=el.querySelector('#env_'+x.st.pick);e.classList.add('open');x.sfx('unlock');x.good(m,'المفتاح جوه!');x.solve(1800);}
     else{x.run.pen+=30;x.save();x.fail(el.querySelector('.envs'),m,'المشغّل رفض الاستنتاج. راجعوا كل إفادة على افتراضكم.');}
   };
  }};
-const RULES=`<div class="card"><b>باسورد الاجتماع</b><p class="muted" style="margin-bottom:8px">نفس أرقام لابتوب مروان، بترتيب جديد:</p><div class="digits4"><span>6</span><span>2</span><span>7</span><span>3</span></div>
-<ol style="margin:12px 0 0;padding-inline-start:1.3em"><li>استخدم كل رقم مرة واحدة.</li><li>الرقم التاني هو أكبر رقم من الأربعة.</li><li>مجموع الرقم الأول والأخير ٩.</li><li>الرقم الأول أصغر من الأخير.</li></ol></div>`;
+const rulesHTML=r=>`<div class="card"><b>باسورد الاجتماع</b><p class="muted" style="margin-bottom:8px">نفس أرقام لابتوب مروان، بترتيب جديد. الخانة ١ هي أول رقم تكتبوه:</p><div class="digits4">${r.digs.map(d=>`<span>${d}</span>`).join('')}</div>
+<ol style="margin:12px 0 0;padding-inline-start:1.3em"><li>استخدم كل رقم مرة واحدة.</li>${r.rules.map(t=>`<li>${t}</li>`).join('')}</ol></div>`;
 const R3B={key:'r3b',title:'الميتينج روم: أول واحد يعمل Join يكسب',short:'السباق',goal:'التعاون خلص. كل واحد لوحده. أول Join صحيح يكسب.',
- hints:['قاعدة واحدة من الأربعة بتثبت خانة كاملة لوحدها.','دوروا على رقمين مجموعهم ٩.',{prism:['_ ? _ _','؟+؟=٩','صغير…كبير','١ باقي'],text:'بعد ما تثبتوا الطرفين، الرقم الباقي ملوش غير مكان واحد.'}],
+ hints:['قاعدة واحدة من الأربعة بتثبت خانة كاملة لوحدها.','في قاعدة بتقول مجموع خانتين. رقمين بس من الباقيين يدّوا المجموع ده.',{prism:['أكبر','؟+؟','< >','١ باقي'],text:'بعد ما تثبتوا تلات خانات، الرقم الباقي ملوش غير مكان واحد.'}],
  render(el,x){
   const names=[0,1,2,3].map(i=>x.player(i,'لاعب '+(i+1)));
   const remote=OE.RACE.available();
-  el.innerHTML=`${RULES}
+  el.innerHTML=`${rulesHTML(x.gen.race)}
   ${remote?`<div class="panel stack" style="gap:10px"><b>ادخلوا من موبايلاتكم</b><p>افتحوا نفس اللينك على الموبايل، دوسوا "أنا لاعب" تحت في صفحة اللعبة، واكتبوا الكود:</p><span class="bigcode">${x.run.code}</span><div class="chips" id="joined"><span class="muted">لسه محدش دخل...</span></div></div>`:''}
   <b>${remote?'أو من الشاشة دي':'محطات الدخول'}</b>
   <div class="stations">${names.map((n,i)=>`<div class="station"><b>${esc(n)}</b><form data-i="${i}" autocomplete="off"><input class="field" id="st${i}" inputmode="numeric" maxlength="4" aria-label="باسورد ${esc(n)}" placeholder="••••"><button class="btn" type="submit">Join</button></form><div class="msg" id="stm${i}"></div></div>`).join('')}</div>`;
   const rj=()=>{const j=el.querySelector('#joined');if(j)j.innerHTML=OE.RACE.joined.length?OE.RACE.joined.map(n=>`<span>${esc(n)}</span>`).join(''):'<span class="muted">لسه محدش دخل...</span>';};
   OE.RACE.onJoined=rj;rj();
   el.querySelectorAll('.station form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();const i=+f.dataset.i,m=el.querySelector('#stm'+i);
-    if(!x.check('11s4l09',x.digits(el.querySelector('#st'+i).value))){x.fail(f,m,'غلط.');return;}
+    if(x.digits(el.querySelector('#st'+i).value)!==x.gen.race.ans){x.fail(f,m,'غلط.');return;}
     const r=await OE.RACE.claim(names[i]);if(r.won)x.win(names[i]);else{m.textContent='سبقك '+(r.by||'حد');m.className='msg err';}});
  }};
 
 /* ---------- phone station (#join) ---------- */
-const J={code:'',name:'',stage:'',last:false,hints:0,winner:'',subs:[],sub:false,iWon:false};
+const J={code:'',name:'',stage:'',last:false,hints:0,winner:'',subs:[],sub:false,iWon:false,race:null};
 try{const j=JSON.parse(sessionStorage.getItem('oe-join')||'null');if(j){J.code=j.code;J.name=j.name;}}catch(e){}
 OE.RACE.renderJoin=function(){
   const app=document.getElementById('app'), D=OE.DBX;
@@ -210,21 +224,21 @@ OE.RACE.renderJoin=function(){
       J.code=code;J.name=name;try{sessionStorage.setItem('oe-join',JSON.stringify({code,name}))}catch(e){}
       try{await D.db.doc('games/'+code+'/players/'+OE.TAB).set({name});}catch(e){}
       J.sub=true;
-      J.subs.push(D.db.doc('games/'+code).onSnapshot(s=>{if(s.exists){const d=s.data();J.last=!!d.last;J.hints=d.hints|0;}OE.RACE.renderJoin();},()=>{}));
+      J.subs.push(D.db.doc('games/'+code).onSnapshot(s=>{if(s.exists){const d=s.data();J.last=!!d.last;J.hints=d.hints|0;J.race=d.race||null;}OE.RACE.renderJoin();},()=>{}));
       J.subs.push(D.db.doc('games/'+code+'/meta/winner').onSnapshot(s=>{J.winner=s.exists?s.data().name||'':'';OE.RACE.renderJoin();},()=>{}));
       OE.RACE.renderJoin();};
   }else if(J.winner){
     app.innerHTML=`<section class="end scene-in">${J.iWon?`<span class="trophy">كسبت!</span><h1>أسرع واحد دخل اجتماع كان ممكن يبقى إيميل</h1>`:`<h1>${esc(J.winner)} سبقك</h1><p class="lead">موضوع الاجتماع: التأكد من وصول الميل.</p>`}</section>`;
-  }else if(!J.last){
+  }else if(!J.last||!J.race){
     app.innerHTML=`<section class="stack scene-in"><span class="eyebrow">كود ${esc(J.code)} · ${esc(J.name)}</span><h2>إنت جوه. استنى.</h2><p class="lead">أول ما الفريق يوصل الميتينج روم، السباق هيظهر هنا.</p></section>`;
   }else{
     const prev=document.getElementById('jp')?.value||'';
-    app.innerHTML=`<section class="stack scene-in"><span class="eyebrow">كود ${esc(J.code)} · ${esc(J.name)}</span><h2>السباق بدأ!</h2>${RULES}
+    app.innerHTML=`<section class="stack scene-in"><span class="eyebrow">كود ${esc(J.code)} · ${esc(J.name)}</span><h2>السباق بدأ!</h2>${rulesHTML(J.race)}
       ${R3B.hints.slice(0,J.hints).map(h=>`<div class="card" style="background:color-mix(in srgb,var(--hi) 25%,var(--surface));color:var(--ink)">${typeof h==='string'?h:h.text}</div>`).join('')}
       <form class="row" id="jpf" autocomplete="off"><input class="field" id="jp" inputmode="numeric" maxlength="4" style="flex:1;direction:ltr;text-align:center;letter-spacing:.4em;font-family:var(--f-mono);font-size:1.4rem" placeholder="••••" aria-label="باسورد"><button class="btn big" type="submit">Join</button></form><div class="msg" id="jpm"></div></section>`;
     document.getElementById('jp').value=prev;
     document.getElementById('jpf').onsubmit=async e=>{e.preventDefault();
-      if(OE.H(OE.digits(document.getElementById('jp').value))!=='11s4l09'){OE.sfx('bad');document.getElementById('jpm').textContent='غلط.';document.getElementById('jpm').className='msg err';return;}
+      if(OE.H(OE.digits(document.getElementById('jp').value)+'|'+J.code)!==J.race.h){OE.sfx('bad');document.getElementById('jpm').textContent='غلط.';document.getElementById('jpm').className='msg err';return;}
       const r=await OE.RACE.claim(J.name,J.code);J.iWon=r.won;if(!r.won)J.winner=r.by||'حد تاني';OE.RACE.renderJoin();};
   }
 };
@@ -237,7 +251,8 @@ OE.register({id:'office',short:'الإيميل',title:'اجتماع كان مم�
    <label class="mode"><input type="radio" name="omode" value="b"><span><b>أول واحد يعمل Join يكسب · منافسة</b><span class="muted">أول غرفتين تعاون، والأخيرة سباق فردي.</span></span></label></div>
    <a href="#join" class="muted" style="font-size:.9rem">أنا لاعب في السباق، عايز أدخل من موبايلي</a></div>`,
  readSetup:()=>({mode:(document.querySelector('input[name=omode]:checked')||{}).value||'a'}),
- isRace:o=>o.mode==='b',
+ isRace:o=>o.mode==='b', generate,
+ raceInfo:(S,H)=>({digs:S.gen.race.digs,rules:S.gen.race.rules,h:H(S.gen.race.ans+'|'+S.code)}),
  roomsFor:o=>[R1,R2,o.mode==='b'?R3B:R3A], rooms:[R1,R2,R3A],
  winHTML:x=>`${x.run.winner?`<span class="trophy">${esc(x.run.winner)}</span><h1>أسرع واحد دخل اجتماع كان ممكن يبقى إيميل</h1>`:`<span class="trophy">الأربعة دخلوا مع بعض</span><h1>${esc(x.run.team)} لحقوا الاجتماع</h1>`}
    <div class="mi boss"><div class="mh"><span>المدير</span><span>موضوع الاجتماع</span></div><p>"شكرًا إنكم جيتوا. كنت عايز أتأكد إن الميل وصل."</p></div><h2>اجتماع كان ممكن يبقى إيميل</h2>`,

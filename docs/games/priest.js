@@ -77,8 +77,8 @@ const R1={key:'k1',title:'آثار الأقدام',short:'الآثار',goal:'ا
   x.st.step=x.st.step||0;x.st.trail=x.st.trail||[];
   const on=new Set(x.st.trail.map(p=>p.join(','))), safe=new Set([x.st.trail[2],x.st.trail[5]].filter(Boolean).map(p=>p.join(',')));
   el.innerHTML=`<div class="pr-hall" id="hall"><div class="pr-door ${x.st.done?'open':''}">${x.st.done?'الباب اتفتح':'باب الغرفة التانية'}</div>
-   <div class="pr-grid">${GRID.map((row,r)=>row.map((c,ci)=>`<button class="pr-tile ${on.has((r+1)+','+(ci+1))?'on':''} ${safe.has((r+1)+','+(ci+1))?'safe':''}" type="button" data-r="${r+1}" data-c="${ci+1}" aria-label="بلاطة صف ${r+1} عمود ${ci+1}">${tileArt(c)}</button>`).join('')).join('')}</div>
-   <div class="pr-start ltr">▲ start</div></div>
+   <div class="pr-grid">${x.gen.grid.map((row,r)=>row.map((c,ci)=>`<button class="pr-tile ${on.has((r+1)+','+(ci+1))?'on':''} ${safe.has((r+1)+','+(ci+1))?'safe':''}" type="button" data-r="${r+1}" data-c="${ci+1}" aria-label="بلاطة صف ${r+1} عمود ${ci+1}">${tileArt(c)}</button>`).join('')).join('')}</div>
+   <div class="pr-grid" style="transform:none;margin-top:6px">${[1,2,3,4,5].map(c=>`<div class="pr-start">${c===x.gen.path[0][1]?'▲':''}</div>`).join('')}</div></div>
    <div class="row" style="justify-content:space-between"><span class="muted">خطوات: ${x.st.trail.length} · النقط الآمنة بتنوّر بنفسجي</span><button class="btn ghost sm" id="card" type="button">بطاقة الأثر</button></div>
    ${x.st.done?'<div class="row"><button class="btn big" id="nx" type="button">خدوا البردية وادخلوا</button></div>':''}<div class="msg" id="m"></div>`;
   const hall=el.querySelector('#hall');
@@ -88,9 +88,9 @@ const R1={key:'k1',title:'آثار الأقدام',short:'الآثار',goal:'ا
   if(x.st.done)return;
   el.querySelectorAll('.pr-tile').forEach(b=>b.onclick=()=>{
     const r=+b.dataset.r,c=+b.dataset.c,i=x.st.trail.length;
-    if(x.H(i+':'+r+','+c)===PATH[i]){x.st.trail.push([r,c]);x.sfx('drip');
+    const PT=x.gen.path;if(PT[i]&&PT[i][0]===r&&PT[i][1]===c){x.st.trail.push([r,c]);x.sfx('drip');
       if(i===2||i===5)x.toast('نقطة آمنة.');
-      if(x.st.trail.length===PATH.length){x.st.done=1;x.sfx('stone');x.bag.add('k_pap','بردية سائل الكشف',PAP,'📜');}
+      if(x.st.trail.length===PT.length){x.st.done=1;x.sfx('stone');x.bag.add('k_pap','بردية سائل الكشف',pap(x.gen),'📜');}
       x.rerender();}
     else{x.sfx('alarm');b.classList.add('bad');hall.classList.remove('pr-flash');void hall.offsetWidth;hall.classList.add('pr-flash');
       const back=i>=6?6:i>=3?3:0;x.st.trail=x.st.trail.slice(0,back);x.save();
@@ -98,8 +98,44 @@ const R1={key:'k1',title:'آثار الأقدام',short:'الآثار',goal:'ا
       setTimeout(()=>x.rerender(),900);}
   });
  }};
-const PAP=`<div class="card"><b>بردية سائل الكشف</b><p class="hand">اعرف ما يحرسه كل إناء:<br>الموجة تحفظ ما يجري بلا قدمين.<br>الطائر يحرس خلاصة زهرة تطفو فوق الماء.<br>العين تحفظ زيتًا يحمل دفء النهار.<br>الجبل يحرس محلول ما يبقى بعد تبخر الماء المالح.</p>
-<p class="hand" style="margin-top:8px">ثم احسب القطرات:<br>للموجة ضعف ما للطائر.<br>وللعين ما للطائر، وزيادة قطرة واحدة.<br>وللجبل ما للعين، ناقص قطرتين.<br>ومجموع قطرات الأواني الأربعة خمس عشرة قطرة.<br>لكل إناء عدد صحيح من قطرة واحدة إلى تسع قطرات.</p>
+const SYM={wave:['الموجة','للموجة',1],bird:['الطائر','للطائر',0],eye:['العين','للعين',1],mountain:['الجبل','للجبل',0]};
+const ING={nile:['ما يجري بلا قدمين','مية صافية بتتحرك لوحدها.'],lotus:['خلاصة زهرة تطفو فوق الماء','زهرة لوتس طافية في سائل فاتح.'],sunoil:['زيتًا يحمل دفء النهار','زيت دهبي دافي، ريحته شمس.'],salt:['محلول ما يبقى بعد تبخر الماء المالح','بلورات بيضا بتلمع، طعمها مالح.']};
+const DW=['','قطرة واحدة','قطرتين','تلات قطرات'];
+const SPELLS=[{w:['النور','تنكسر','اللعنة','تعود','الحماية','القرية'],d:['النار','تنتشر','اللوعة','تسود','الحكاية','القلعة']},
+ {w:['الفجر','تنطفئ','الظلمة','يعود','السلام','الوادي'],d:['الفقر','تنطلق','الكلمة','يسود','الكلام','النادي']},
+ {w:['الماء','تنحسر','العتمة','ترجع','البركة','الدار'],d:['المال','تنحصر','العتبة','تركع','الشركة','النار']}];
+function genPath(){
+  const R=OE.RND;
+  for(let t=0;t<800;t++){const p=[[5,R.int(1,5)]];
+    while(p.length<12){const [r,c]=p[p.length-1];if(r===1&&p.length>=8)break;
+      const o=[[r-1,c],[r-1,c],[r+1,c],[r,c-1],[r,c+1]].filter(([a,b])=>a>=1&&a<=5&&b>=1&&b<=5&&p.slice(0,-1).every(([y,z])=>Math.abs(y-a)+Math.abs(z-b)>1)&&!(a===r&&b===c));
+      if(!o.length)break;p.push(R.pick(o));}
+    if(p[p.length-1][0]===1&&p.length>=8)return p;}
+  return [[5,1],[4,1],[4,2],[3,2],[3,3],[3,4],[2,4],[2,5],[1,5]];
+}
+function generate(){
+  const R=OE.RND,path=genPath(),idx={};path.forEach((p,i)=>idx[p[0]+','+p[1]]=i);
+  const ft=i=>i%2===0?'ش':'ي',grid=[];
+  for(let r=1;r<=5;r++){const row=[];for(let c=1;c<=5;c++){const k=r+','+c;
+    if(k in idx){row.push('ص-'+ft(idx[k]));continue;}
+    const adj=[[r-1,c],[r+1,c],[r,c-1],[r,c+1]].map(q=>idx[q[0]+','+q[1]]).filter(i=>i!==undefined&&i<path.length-1),t=Math.random();
+    row.push(t<.3?'ص-'+(adj.length?ft(adj[0]):R.pick(['ش','ي'])):(t<.65?'خ':'ن')+'-'+R.pick(['ش','ي']));}
+    grid.push(row);}
+  const keys=['wave','bird','eye','mountain'],[dbl,base,plus,minus]=R.shuffle(keys),ings=R.shuffle(['nile','lotus','sunoil','salt']),guard={},inside={};
+  keys.forEach((k,i)=>{guard[k]=ings[i];inside[k]=ING[ings[i]][1];});
+  const s=R.int(2,4),a=R.int(1,2),b=R.int(1,Math.min(3,s+a-1)),val={[dbl]:2*s,[base]:s,[plus]:s+a,[minus]:s+a-b},L=k=>SYM[k][1];
+  const l1=R.shuffle(keys).map(k=>`${SYM[k][0]} ${SYM[k][2]?'تحفظ':'يحرس'} ${ING[guard[k]][0]}.`);
+  const l2=[`${L(dbl)} ضعف ما ${L(base)}.`,`و${L(plus)} ما ${L(base)}، وزيادة ${DW[a]}.`,`و${L(minus)} ما ${L(plus)}، ناقص ${DW[b]}.`,`ومجموع قطرات الأواني الأربعة ${5*s+2*a-b} قطرة.`];
+  const drops=['nile','lotus','sunoil','salt'].map(g=>val[keys.find(k=>guard[k]===g)]).join(',');
+  const sp=R.pick(SPELLS),ids=R.shuffle(Array.from({length:12},(_,i)=>'f'+(i+1))),words={};
+  sp.w.forEach((w,i)=>words[ids[i]]=w);sp.d.forEach((w,i)=>words[ids[i+6]]=w);
+  const mix=R.shuffle(ids),stash={eye:mix.slice(0,4),sun:mix.slice(4,8),jar:mix.slice(8,12)};
+  const pat=sp.w.map((w,i)=>{const W=[...w],D=[...sp.d[i]],diff=W.map((ch,j)=>ch!==D[j]?j:-1).filter(j=>j>=0),keep=R.pick(diff),st=w.startsWith('ال')?2:1;
+    const hide=R.shuffle(W.map((_,j)=>j).filter(j=>j>=st&&j!==keep)).slice(0,2);return W.map((ch,j)=>hide.includes(j)?'□':ch).join('');});
+  return {path,grid,jars:R.shuffle(keys),inside,l1,l2,drops,words,stash,pat,correct:ids.slice(0,6)};
+}
+const pap=g=>`<div class="card"><b>بردية سائل الكشف</b><p class="hand">اعرف ما يحرسه كل إناء:<br>${g.l1.join('<br>')}</p>
+<p class="hand" style="margin-top:8px">ثم احسب القطرات:<br>${g.l2.join('<br>')}<br>لكل إناء عدد صحيح من قطرة واحدة إلى تسع قطرات.</p>
 <p class="hand" style="margin-top:8px">اكتب نصيب كل مكوّن أمام اسمه على لوحة التحضير. ترتيب الأواني على الطاولة ليس ترتيب الإجابة.</p></div>`;
 const JS={eye:'<path d="M18 34q22-18 44 0q-22 18-44 0z" fill="none" stroke="#c9a0ff" stroke-width="3"/><circle cx="40" cy="34" r="6" fill="#c9a0ff"/>',
  mountain:'<path d="M14 46l16-24 10 12 8-8 18 20z" fill="#c9a0ff"/>',
@@ -110,19 +146,19 @@ const INSIDE={eye:'زيت دهبي دافي، ريحته شمس.',mountain:'بل
 const NAMES=[['nile','ماء النيل'],['lotus','خلاصة اللوتس'],['sunoil','زيت الشمس'],['salt','محلول الملح']];
 const MSG='«خلف عين لا ترى،<br>وتحت شمس لا تحرق،<br>وداخل إناء لا يحمل ماء…<br>تجدون ما سقط من كلام الحماية.»';
 const R2={key:'k2',title:'أواني الكاهن',short:'الأواني',goal:'حضّروا سائل الكشف بالكميات الصح.',
- hints:['أول جزء في البردية بيقولكم كل إناء بيحرس أنهي مكوّن.','سمّوا قطرات الطائر بحرف، واكتبوا الباقي على أساسه.',
-  {prism:['س','٢س','س+١','س−١'],text:'الزيادة والنقصان بيلغوا بعض. المجموع كله مضاعف لحاجة واحدة.'}],
+ hints:['أول جزء في البردية بيقولكم كل إناء بيحرس أنهي مكوّن.','في إناء واحد كل الباقي متعرّف بيه. سمّوا قطراته بحرف.',
+  {prism:['س','٢س','س + ؟','س + ؟ − ؟'],text:'اكتبوا الأربعة بدلالة حرف واحد، واجمعوهم على المجموع المكتوب.'}],
  render(el,x){
   x.st.v=x.st.v||{};
-  el.innerHTML=`<div class="pr-hall stack"><b>الطاولة الحجرية</b><div class="pr-jars">${['eye','mountain','wave','bird'].map(k=>`<button class="pr-jar" type="button" data-j="${k}">${jar(k)}<span class="muted" style="font-size:.8rem">بصّوا جوه</span></button>`).join('')}</div></div>
+  el.innerHTML=`<div class="pr-hall stack"><b>الطاولة الحجرية</b><div class="pr-jars">${x.gen.jars.map(k=>`<button class="pr-jar" type="button" data-j="${k}">${jar(k)}<span class="muted" style="font-size:.8rem">بصّوا جوه</span></button>`).join('')}</div></div>
    <div class="row" style="align-items:flex-start;gap:20px"><div class="pr-board" style="flex:1;min-width:240px"><b>لوحة التحضير</b>${NAMES.map(([k,n])=>`<label for="d_${k}"><span>${n}</span><select id="d_${k}">${['—',1,2,3,4,5,6,7,8,9].map(o=>`<option ${String(x.st.v[k])===String(o)?'selected':''}>${o}</option>`).join('')}</select></label>`).join('')}
    <button class="btn" id="go" type="button">تحضير</button><div class="msg" id="m"></div></div>
    <svg class="pr-bowl ${x.st.done?'lit':''}" viewBox="0 0 160 100" aria-hidden="true"><ellipse cx="80" cy="34" rx="70" ry="16" fill="#3c382e"/><path d="M10 34q6 60 70 60t70-60" fill="#5a5547"/><ellipse class="liq" cx="80" cy="36" rx="62" ry="12"/></svg></div>
    ${x.st.done?`<div class="pr-uv" id="uv">${MSG}</div><div class="row"><button class="btn big" id="nx" type="button">ادخلوا الغرفة التالتة</button></div>`:''}`;
-  el.querySelectorAll('.pr-jar').forEach(b=>b.onclick=()=>{x.sfx('drip');x.toast(INSIDE[b.dataset.j]);});
+  el.querySelectorAll('.pr-jar').forEach(b=>b.onclick=()=>{x.sfx('drip');x.toast(x.gen.inside[b.dataset.j]);});
   NAMES.forEach(([k])=>{const s=el.querySelector('#d_'+k);s.onchange=()=>{x.st.v[k]=s.value;x.save();x.sfx('drip');};});
   el.querySelector('#go').onclick=()=>{const v=NAMES.map(([k])=>el.querySelector('#d_'+k).value).join(',');
-    if(x.check('rqf4f8',v)){x.st.done=1;x.sfx('magic');x.bag.add('k_msg','رسالة الكشف','<div class="card"><p class="hand">'+MSG+'</p></div>','✨');x.rerender();setTimeout(()=>{const u=el.querySelector('#uv');u&&u.classList.add('lit');},120);}
+    if(v===x.gen.drops){x.st.done=1;x.sfx('magic');x.bag.add('k_msg','رسالة الكشف','<div class="card"><p class="hand">'+MSG+'</p></div>','✨');x.rerender();setTimeout(()=>{const u=el.querySelector('#uv');u&&u.classList.add('lit');},120);}
     else{x.fail(el.querySelector('.pr-bowl'),el.querySelector('#m'),'السائل فار وانطفى. الكميات غلط.');}};
   const u=el.querySelector('#uv');if(u)setTimeout(()=>u.classList.add('lit'),60);
   const nx=el.querySelector('#nx');if(nx)nx.onclick=()=>x.solve(100);
@@ -132,9 +168,10 @@ const STASH={eye:['f1','f2','f3','f4'],sun:['f5','f6','f7','f8'],jar:['f9','f10'
 const PAT=['ال□و□','ت□□س□','اللع□ة','تع□□','الحم□□ة','القر□ة'];
 const R3={key:'k3',title:'خط الكاهن',short:'النقش',goal:'لمّوا الكلام اللي وقع، وكمّلوا نقش الحماية.',
  hints:['الرسالة بتوصف حاجات جامدة في الأوضة: عين، وشمس، وإناء.','كل حرف باقي في النقش لازم يفضل في مكانه. وعدد المربعات مهم.',
-  {prism:['ال□و□','النور؟','النار؟','الحرف ٤'],text:'كل خانة فيها كلمتين شبه بعض. قارنوهم حرف بحرف مع اللي باقي في النقش.'}],
+  {prism:['□','حرف','بحرف','قارنوا'],text:'كل خانة فيها كلمتين شبه بعض. قارنوهم حرف بحرف مع اللي باقي في النقش.'}],
  render(el,x){
   x.st.slots=x.st.slots||[null,null,null,null,null,null];
+  const FR=x.gen.words,STASH=x.gen.stash,PAT=x.gen.pat;
   const have=Object.keys(STASH).filter(k=>x.st['f_k_'+k]).flatMap(k=>STASH[k]);
   x.st.mix=x.st.mix||{};have.forEach(f=>{if(x.st.mix[f]===undefined)x.st.mix[f]=Math.random()*10-5;});
   const L=[{id:'k_eye',label:'عين حجرية',art:'👁',stash:1,msg:'النقش اتفتح لجوه… في قصاصات!'},{id:'k_sun',label:'قرص شمس',art:'🌞',stash:1,msg:'درج صغير تحت القرص… فيه قصاصات!'},{id:'k_jar',label:'جرة فاضية',art:'⚱',stash:1,msg:'الجرة فاضية من المية… بس فيها حافظة قصاصات!'},
@@ -154,7 +191,7 @@ const R3={key:'k3',title:'خط الكاهن',short:'النقش',goal:'لمّوا
   el.querySelectorAll('.pr-frag').forEach(b=>b.onclick=()=>{const f=b.dataset.f;if(x.st.slots.includes(f))return;if(x.st.sel===null||x.st.sel===undefined){x.toast('اختاروا خانة في النقش الأول.');return;}x.st.slots[x.st.sel]=f;x.st.sel=null;x.sfx('stone');x.rerender();});
   el.querySelector('#go').onclick=()=>{const seal=el.querySelector('#seal');
     if(x.st.slots.some(s=>!s)){x.fail(seal,el.querySelector('#m'),'النقش ناقص.');return;}
-    if(x.check('1n4cn9n',x.st.slots.join(','))){x.st.done=1;x.save();seal.classList.add('lit');el.querySelector('#gate').classList.add('open');x.sfx('magic');
+    if(x.st.slots.join(',')===x.gen.correct.join(',')){x.st.done=1;x.save();seal.classList.add('lit');el.querySelector('#gate').classList.add('open');x.sfx('magic');
       setTimeout(()=>x.voice('صوت الكاهن من ورا البوابة','«عاد الختم… أنقذتم القرية. والطريق إليّ أصبح مفتوحًا.»',{av:'𓋹',onClose:()=>x.solve(0)}),2200);}
     else{seal.classList.remove('flick');void seal.offsetWidth;seal.classList.add('flick');x.fail(null,el.querySelector('#m'),'الختم ومض مرة… وانطفى.');}};
  }};
@@ -162,7 +199,7 @@ OE.register({id:'priest',short:'الكاهن',title:'لعنة الكاهن ال�
  tagline:'الكاهن دخل القصر يحبس اللعنة… ومرجعش.',minutes:35,players:'٣–٦ لاعبين',difficulty:5,cover,
  story:`<p>من مئات السنين، ختم الحراس لعنة تحت قصر الملك. في ليلة واحدة انطفى نور الختم، وبدأت علامات سودا تظهر على أبواب البيوت. الكاهن الأخير دخل القصر يحبس اللعنة عند مصدرها… ومرجعش.</p>
  <p class="card" style="margin-top:12px"><span class="hand">«أنا لم أهرب. دخلت القصر لأمنع اللعنة من الوصول إليكم، لكنني لن أستطيع حبسها طويلًا. اتبعوا أثري، وأعيدوا صنع سائل الكشف، ثم أكملوا كلمات الحماية. إن عاد الختم، نجت القرية… وانفتح الطريق إليّ.»</span></p>`,
- rooms:[R1,R2,R3],
+ rooms:[R1,R2,R3], generate,
  winHTML:x=>`<span class="trophy">عاد الختم</span><h1>القرية نجت</h1><p class="lead">العلامات السودا اختفت، والهمس سكت، وبوابة القصر اتفتحت. ${OE.esc(x.run.team)} لقوا الطريق للكاهن.</p>`,
  loseHTML:()=>`<h1>اللعنة كسبت الليلة</h1><p class="lead">نور الختم انطفى خالص، والهمس بقى أعلى. القرية مستنية فريق تاني.</p>`,
 });
