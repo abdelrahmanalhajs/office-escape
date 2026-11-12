@@ -1,0 +1,100 @@
+0|Do Not Disturb the Pharaoh */ (
+1|You found a papyrus piece!
+2|The Guard's Cipher
+3|Guard
+4|Open the guard's door to reach the Hall of the Scale.
+5|The papyrus isn't decoration. Every symbol has a value.
+6|The door doesn't want you to count. It wants you to sort.
+7|…
+8|Translate each different symbol, and the order
+9|always right
+10|is the one anyone knows without thinking.
+11|Jar
+12|Statue
+13|The statue is staring at you. That's all.
+14|Torch
+15|Sand pile
+16|Wooden chest
+17|Empty. Someone got here first.
+18|Crack in the wall
+19|Rug
+20|Three thousand years of dust.
+21|Cat statue
+22|Bastet is asleep. Let's not wake her too.
+23|Papyrus pieces: ${got} of 4
+24|Assemble the papyrus
+25|“The right order is always right anyway”
+26|Papyrus
+27|Guard's door
+28|The door is shifting…
+29|A voice from inside the wall
+30|“Take the papyrus with you… the last door speaks the same language.”
+31|The symbols went dark. The door disagrees.
+32|The Pharaoh's Scale
+33|Scale
+34|Pass the scale's test and open the throne room.
+35|The same drawing has the same value on every tablet.
+36|Start with the tablet that has one drawing repeated.
+37|Every value you learn unlocks the next tablet.
+38|Under the statue
+39|Tablet 1
+40|Behind the curtain
+41|Tablet 2
+42|Inside the small coffin
+43|Tablet 3
+44|Vase
+45|Dry flowers inside.
+46|Shield
+47|Very heavy.
+48|Little mummy
+49|A cat? A dog? Not now.
+50|Throne room lock
+51|Turn the lock
+52|Pharaoh (muttering)
+53|“Is all this noise really necessary just to get some sleep?”
+54|The scale tipped. The Pharaoh turned over in his sleep.
+55|Restore the Protection
+56|Seal
+57|Arrange the protection symbols on the altar and open the Seal of Sleep box.
+58|One symbol is banned from both ends. Start with it.
+59|Two symbols must stand next to each other. Treat them as one piece.
+60|1
+61|2
+62|3
+63|4
+64|After arranging, the will is read from the right. And the papyrus is still in your bag.
+65|Behind the torch
+66|Card 1
+67|Under the rug
+68|Card 2
+69|The statue's mouth
+70|Card 3
+71|Pillar
+72|Carvings of an old party.
+73|Small boat
+74|The sun boat. It's missing an oar.
+75|Basket
+76|Dates that are three thousand years old. No.
+77|The altar · from left to right
+78|Pick a symbol, then its place. Click a filled place to empty it.
+79|Lock in the order
+80|The symbols go dark one after the other…
+81|“Go back to the papyrus. Start with the symbol at the far right, then move slot by slot to the left. The symbols' numbers open the Seal of Sleep box.”
+82|Open “The Pharaoh's Will”
+83|The Pharaoh's Will
+84|Seal of Sleep box
+85|Pharaoh
+86|“Finally… who even allowed you into my tomb?! Close the door behind you. And no slamming.”
+87|The box didn't budge. The Pharaoh is coughing.
+88|Do Not Disturb the Pharaoh
+89|Someone touched the coffin. And the Pharaoh is awake… and cranky.
+90|6 players
+91|You entered an ancient tomb, and someone on the team touched the coffin. Suddenly the tomb alarm went off and woke the Pharaoh… the last thing he needed was someone waking him.
+92|The Seal of Sleep is locked in a box inside the throne room. Put it back before time runs out.
+93|“Who's knocking?! I've been asleep for three thousand years! You have twenty minutes to put the Seal of Sleep back… before I wake up properly and tell you the whole history of Egypt!”
+94|Yes sir
+95|The Pharaoh sleeps
+96|The Seal of Sleep is back in place
+97|The clock stopped, the alarm calmed, and the tomb went quiet again. ${OE.esc(x.run.team)} tiptoed out.
+98|The Pharaoh is wide awake
+99|“Fine… since you woke me, we start from the first dynasty!”

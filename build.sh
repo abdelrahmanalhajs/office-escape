@@ -6,3 +6,4 @@ rm -rf docs/games; cp -R games docs/games; touch docs/.nojekyll
 [ -f logo.png ] && cp logo.png docs/logo.png
 [ -d sounds ] && { rm -rf docs/sounds; cp -R sounds docs/sounds; }
 true
+[ -f i18n/build_en.py ] && python3 i18n/build_en.py

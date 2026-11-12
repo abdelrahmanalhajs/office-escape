@@ -1,0 +1,88 @@
+0|Curse of the Last Priest */ (
+1|“My sole has three horizontal lines, and a crescent at the heel. I placed my left foot at the start arrow. After left comes right, and after right comes left. Move only to an adjacent tile: forward, back or to either side. No diagonal steps, no jumping, and no returning to a footprint already crossed.”
+2|Footprints
+3|Footprints
+4|Follow the priest's trail to the door without stepping on a cursed footprint.
+5|Every footprint has more than one mark. One right mark isn't enough.
+6|Even the crescent can be a trick if the number of lines is different.
+7|After left comes right. A correct print for the same foot you're standing on won't work.
+8|The priest's footprint card
+9|The door opened
+10|The second room's door
+11|Tile row ${r+1} column
+12|Steps:
+13|Safe points glow purple
+14|Footprint card
+15|Take the papyrus and go in
+16|Safe point.
+17|Papyrus of the Revealing Liquid
+18|Cursed footprint! Back to the last safe point.
+19|Cursed footprint! Back to the start.
+20|Learn what each vessel guards:
+21|Then count the drops:
+22|Each vessel holds a whole number of drops, from one to nine.
+23|Write each ingredient's share next to its name on the preparation board. The order of the vessels on the table is not the order of the answer.
+24|…
+25|The Priest's Vessels
+26|Vessels
+27|Prepare the revealing liquid in the right amounts.
+28|The first part of the papyrus tells you which ingredient each vessel guards.
+29|One vessel defines all the others. Name its drops with a letter.
+30|x
+31|2x
+32|x + ?
+33|x + ? − ?
+34|Write all four in terms of one letter, and add them up to the written total.
+35|The stone table
+36|Look inside
+37|Preparation board
+38|Prepare
+39|Enter the third room
+40|The revealed message
+41|The liquid fizzed and went out. The amounts are wrong.
+42|The Priest's Handwriting
+43|Inscription
+44|Gather the words that fell, and complete the protection inscription.
+45|The message describes solid things in the room: an eye, a sun, and a vessel.
+46|Every letter left in the inscription must stay in place. And the number of squares matters.
+47|letter
+48|letter by letter
+49|Compare
+50|Every slot has two similar words. Compare them letter by letter with what's left of the inscription.
+51|Stone eye
+52|The carving opened inward… there are scraps!
+53|Sun disc
+54|A small drawer under the disc… with scraps inside!
+55|Empty jar
+56|The jar is empty of water… but there's a holder with scraps in it!
+57|Jar full of water
+58|Just water. And water washes away ink.
+59|Torch
+60|Its flame shakes at the whispers.
+61|Guard statue
+62|Its eyes are open. Not that one.
+63|Pillar
+64|Black marks are creeping across it.
+65|Mat
+66|Dust.
+67|“Six words restore the seal. Every square hides a missing letter. Choose the word that fits the remaining letters, and place it where it belongs. Do not erase a letter that remains, and do not add a square.”
+68|You haven't found any scraps yet.
+69|Click a slot in the inscription, then a scrap. Click a filled slot to empty it.
+70|Restore the seal
+71|Pick a slot in the inscription first.
+72|The inscription is incomplete.
+73|The priest's voice from behind the gate
+74|“The seal is back… you saved the village. And the way to me is open.”
+75|The seal flashed once… and went dark.
+76|The Priest
+77|Curse of the Last Priest
+78|The priest went into the palace to lock the curse in… and never returned.
+79|3
+80|6 players
+81|Hundreds of years ago, the guardians sealed a curse beneath the king's palace. One night the seal's light went out, and black marks began appearing on the doors of the houses. The last priest went into the palace to lock the curse in at its source… and never returned.
+82|“I did not flee. I entered the palace to stop the curse from reaching you, but I cannot hold it for long. Follow my trail, remake the revealing liquid, then complete the words of protection. If the seal returns, the village is saved… and the way to me opens.”
+83|The seal is back
+84|The village is saved
+85|The black marks vanished, the whispers stopped, and the palace gate opened. ${OE.esc(x.run.team)} found the way to the priest.
+86|The curse won tonight
+87|The seal's light is fully out, and the whispers grew louder. The village is waiting for another team.

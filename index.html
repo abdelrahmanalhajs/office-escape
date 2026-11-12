@@ -709,7 +709,7 @@ function home(){
   const BEST=loadBest();
   app.innerHTML=`<section class="scene-in stack" style="gap:22px">
     <div class="home-hero"><div class="brand">${LOGO()}</div><div class="txt"><span class="eyebrow">ألعاب هروب جماعية · خمس أبواب</span><h1 class="ltr" style="text-align:right">DUCK</h1>
-      <p class="lead">كل باب لعبة كاملة: قصة، تلات غرف، وعدّاد. مفيش حد هيقولكم الحل. الأدلة متخبية في الغرف، والمساعدات بتتقلب واحدة واحدة وبتكلّفكم وقت.</p></div></div>
+      <p class="lead">كل باب لعبة كاملة: قصة، تلات غرف، وعدّاد. مفيش حد هيقولكم الحل. الأدلة متخبية في الغرف، والمساعدات بتتقلب واحدة واحدة وبتكلّفكم وقت.</p>${/github\.io|localhost|127\.0\.0\.1|^file:/.test(location.href)?'<div class="row"><a class="btn ghost sm" id="langLink" href="en/index.html" hreflang="en" lang="en">English</a></div>':''}</div></div>
     <svg class="pond" viewBox="0 0 800 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0 13q20-12 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
     <div class="doors">${ORDER.map(id=>{const g=GAMES[id];return `<a class="door-card" href="#g-${id}" style="--dc:${g.color}">
       <span class="knob" aria-hidden="true"></span><div class="art">${g.cover}</div>

@@ -1,0 +1,165 @@
+0|All games
+1|Evidence bag
+2|Team chat
+3|٠١٢٣٤٥٦٧٨٩
+4|٠-٩
+5|OK
+6|Every paper or clue you find is saved here, and you can come back to it any time.
+7|Still empty.
+8|Clear
+9|Confirm
+10|Hard mode: every wrong code costs 20 seconds
+11|The host paused the game…
+12|Team code
+13|12345
+14|Team escape games · five doors
+15|Every door is a full game: a story, three rooms and a countdown. Nobody will tell you the answer. Clues are hidden in the rooms, and help cards flip one at a time and cost you time.
+16|min
+17|Difficulty ${g.difficulty} of
+18|Search
+19|Click anything in the room. Clues are saved in the evidence bag.
+20|Connect
+21|No clue solves it alone. The answer is in linking things together.
+22|Flip a card
+23|Three help cards per room, each clearer than the one before.
+24|You joined team
+25|Type your name below and open the team chat. If your team is in the meeting race:
+26|open the race station
+27|Host screen
+28|Your name
+29|Open the draft
+30|Join the chat
+31|The code shows at the top of the team's screen once the game starts.
+32|Enter the team code (4 characters) and your name.
+33|A game is in progress:
+34|Resume
+35|All doors
+36|min ·
+37|Set up the round
+38|Team name
+39|Penalty per help card
+40|30 seconds
+41|2 minutes
+42|No penalty
+43|Level
+44|Easy · more time, first help free, fewer decoys
+45|Normal
+46|Hard · less time, only two help cards, wrong codes cost time
+47|Player names (optional)
+48|Player
+49|Start the clock
+50|min. The clock starts as soon as you click.
+51|Team
+52|Room
+53|of
+54|min
+55|s
+56|free
+57|Help card
+58|Flip the card ·
+59|Locked
+60|Room ${S.room+1} of
+61|Mission
+62|Help cards
+63|No help used
+64|Lightning fast
+65|Hard mode
+66|Easy mode
+67|Total time
+68|including help penalties
+69|Finished at
+70|Help cards
+71|Reached
+72|The end
+73|Play again
+74|The result wasn't saved to the board.
+75|All
+76|Tournament
+77|Leaderboard
+78|Order
+79|Fastest time
+80|First to finish
+81|Game
+82|The shared leaderboard only works from the
+83|link, while signed in. The game itself plays normally.
+84|Can't reach the board right now.
+85|Loading results...
+86|No team has finished here yet.
+87|Fastest:
+88|Ran out of time
+89|Time
+90|Helps
+91|This will delete all results (
+92|and can't be undone. Are you sure?
+93|Delete
+94|No
+95|Clear the board
+96|The board is loading slowly.
+97|of 3 stars
+98|Tournament: play all five games under the same team name. Ranking is by games finished, then total time.
+99|Games
+100|Total
+101|Stars
+102|Marwan is out today… and his laptop is locked with a password he doesn't remember himself.
+103|The file has to be sent. And management wants it by fax. Yes, fax.
+104|And at the end, an urgent meeting. You have twenty minutes.
+105|Years ago, there was a game show that millions watched.
+106|In the final episode the host vanished… and the broadcast cut out.
+107|Today you got an email. You walked into the studio, and the door locked behind you.
+108|You entered an ancient tomb, and everything was silent.
+109|Until one of you touched the coffin…
+110|The Pharaoh woke up. And he won't sleep until the Seal of Sleep is back in place.
+111|The seal's light went out, and black marks appeared on the village doors.
+112|The last priest went into the palace to lock the curse in… and never came back.
+113|He left a trail, a papyrus, and an unfinished inscription. The rest is up to you.
+114|The party is in twenty minutes, and the birthday guest is on the way.
+115|The serving plate is empty. The cake is gone!
+116|Four people were in the hall, and each has a different story. Who did it?
+117|Skip
+118|Next
+119|Let's start
+120|The host opened a free help card for you.
+121|The host adjusted the time.
+122|Host
+123|Join the team
+124|Team code:
+125|Scan the code with your phone camera to join the team chat
+126|and the race station
+127|You must be signed in and the page must be shared with you.
+128|The host screen works from the
+129|link only, while signed in.
+130|Loading…
+131|This screen is for the page owner and editors only.
+132|Live control
+133|Every team that starts a game shows up here. Send a free hint, add time, pause the game, or send a message.
+134|No teams have started yet. As soon as a team clicks
+135|it will show up here.
+136|Finished
+137|Time's up
+138|Paused
+139|Playing
+140|Room ${Math.min((t.room|0)+1,t.rooms||3)} of
+141|Help cards:
+142|Level:
+143|Easy
+144|Hard
+145|Free hint
+146|Pause
+147|Message to the team
+148|Send
+149|Sent to the team.
+150|Not sent. Try again.
+151|Team draft
+152|Not sent. Try again.
+153|Close
+154|Everyone on the team writes here and sees the same draft. Click × on a line to strike it out. The draft is public: don't write private details in it.
+155|Strike out line
+156|Can't reach the draft right now. Try again in a moment.
+157|The draft is empty. Write the first clue you found.
+158|No messages yet. Send the first clue you found.
+159|Write a line in the draft
+160|Write a message
+161|Type your name first
+162|Message
+163|Add
+164|The message wasn't sent.

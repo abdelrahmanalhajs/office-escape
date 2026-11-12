@@ -131,8 +131,9 @@ function generate(){
   const sp=R.pick(SPELLS),ids=R.shuffle(Array.from({length:12},(_,i)=>'f'+(i+1))),words={};
   sp.w.forEach((w,i)=>words[ids[i]]=w);sp.d.forEach((w,i)=>words[ids[i+6]]=w);
   const mix=R.shuffle(ids),stash={eye:mix.slice(0,4),sun:mix.slice(4,8),jar:mix.slice(8,12)};
-  const pat=sp.w.map((w,i)=>{const W=[...w],D=[...sp.d[i]],diff=W.map((ch,j)=>ch!==D[j]?j:-1).filter(j=>j>=0),keep=R.pick(diff),st=w.startsWith('ال')?2:1;
+  let pat;for(let tries=0;tries<80;tries++){pat=sp.w.map((w,i)=>{const W=[...w],D=[...sp.d[i]],diff=W.map((ch,j)=>ch!==D[j]?j:-1).filter(j=>j>=0),keep=R.pick(diff),st=w.startsWith('ال')?2:1;
     const hide=R.shuffle(W.map((_,j)=>j).filter(j=>j>=st&&j!==keep)).slice(0,2);return W.map((ch,j)=>hide.includes(j)?'□':ch).join('');});
+    const all=[...sp.w,...sp.d];if(pat.every(q=>all.filter(w=>[...w].length===[...q].length&&[...q].every((ch,k)=>ch==='□'||ch===[...w][k])).length===1))break;}
   return {path,grid,jars:R.shuffle(keys),inside,l1,l2,drops,words,stash,pat,correct:ids.slice(0,6)};
 }
 const pap=g=>`<div class="card"><b>بردية سائل الكشف</b><p class="hand">اعرف ما يحرسه كل إناء:<br>${g.l1.join('<br>')}</p>

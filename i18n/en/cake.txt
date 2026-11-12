@@ -1,0 +1,109 @@
+0|The Case of the Missing Birthday Cake */\n(
+1|The Crime Scene
+2|Hall
+3|Open the evidence box.
+4|The three papers complete each other. None of them has the time of the power cut.
+5|First work out when the cake arrived.
+6|Party
+7|?
+8|??:??
+9|The box reads the time like the wall clock, not like the invitation.
+10|NO EATING ·
+11|NO EATING
+12|Wall clock:
+13|On the evidence box
+14|“If you find out when the power cut, you'll know the first thread of the crime… and please don't eat the evidence”
+15|Gift table
+16|Birthday invitation
+17|You're invited to a birthday… surprise!
+18|The party is at
+19|pm. Don't be late.
+20|Fridge door
+21|Baker's note
+22|The cake was delivered and put in the fridge
+23|before the party. Enjoy!
+24|Phone on the sofa
+25|Message from the host
+26|Guys, the power's out! The cake had only just arrived
+27|ago… somebody find the flashlight.
+28|Balloons
+29|A balloon popped. Nobody even flinched.
+30|Box of candles
+31|Candles without a cake. Tragedy.
+32|Under the sofa
+33|A fork with cream on it. Someone was in a hurry.
+34|Speaker
+35|A birthday playlist on mute.
+36|The cat
+37|Innocent. This time.
+38|Evidence box
+39|A note from the box
+40|“Whoever took the cake was probably among you… and may still be playing the innocent!”
+41|A note inside the box
+42|The box is locked. Try again.
+43|We're All Innocent, Guys
+44|Cameras
+45|Identify the suspect… and exactly when they entered.
+46|None of them gave a time. They're all talking relative to something else.
+47|Put them on a timeline. The hall's clues are still in your bag.
+48|Before
+49|After
+50|Not the time
+51|Arrival
+52|Three conditions on the screen. Only one person meets all three.
+53|The cake was there until the power cut. After that it vanished.
+54|Whoever took the cake came in before it vanished.
+55|They left after it vanished.
+56|They weren't in the hall when the cake arrived.
+57|Movement log
+58|Accusation report
+59|Suspect
+60|Entered at
+61|Minute
+62|Make the accusation
+63|A wrong accusation = 30 second penalty
+64|Statement of
+65|Choose a suspect.
+66|Camera system
+67|“Suspect identified successfully! But it seems they forgot that cameras never forget… even if they forgot to wipe the cream off their hands
+68|”
+69|You have the kitchen key.
+70|“Looks like you rushed to judgment, Detective… go back and review the evidence!”
+71|The Kitchen and the Cake Rescue Mission
+72|Kitchen
+73|The fridge is locked with a code. Build the cake correctly and open it.
+74|The recipe isn't written in order. Order it yourselves, and don't assume the cake is ordinary.
+75|The code is read from the base upward.
+76|Count
+77|One layer has no number written on it. Look at it carefully.
+78|The plate is empty
+79|Click a layer to put it on top of the previous one. Click a layer in the cake to remove it.
+80|The cake is ready
+81|Cookbook
+82|The recipe
+83|“To make a proper cake, not just a random mixture like what Omar makes in the kitchen:”
+84|Sink
+85|A cake knife, washed in a hurry.
+86|Oven
+87|Cold. Nobody baked anything.
+88|Apron
+89|It has a cream fingerprint. Looks like
+90|The cake collapsed. That's an Omar mixture.
+91|Fridge code
+92|Build the cake first.
+93|Message from
+94|“Guys, I hid the cake to surprise the birthday guest and put a photo of him sleeping on it… but I didn't expect you to turn the birthday into a police station! And by the way, I was only going to eat a small piece”
+95|The fridge is buzzing. Wrong code.
+96|Cake
+97|The Missing Birthday Cake Case
+98|The party is in 20 minutes. And the cake… is missing.
+99|3
+100|6 detectives
+101|The party starts in 20 minutes, and the birthday guest is on the way, but there's a disaster… the cake is gone!
+102|The last person to see it says they left it in its place, the others each have a different story, and someone is clearly hiding a secret. Find out who, when, and where.
+103|Case solved
+104|Congratulations, detectives!
+105|You saved the birthday before the guest arrived… but there's a question more important than all the evidence: which of you licked the cream off the serving plate?
+106|The birthday guest has arrived
+107|The candles are lit… over an empty plate. And everyone is looking at
+108|each other

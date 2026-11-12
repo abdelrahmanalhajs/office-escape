@@ -10,5 +10,9 @@
 
 العبوا هنا: https://abdelrahmanalhajs.github.io/office-escape/
 
+English version: https://abdelrahmanalhajs.github.io/office-escape/en/
+
 المصدر في `index.html` و `games/`. نسخة GitHub Pages في `docs/` وبتتبني بـ `./build.sh`.
 لوحة النتايج المشتركة ودخول السباق من الموبايل شغالين في نسخة Claude بس.
+
+النسخة الإنجليزية بتتبني من المصدر العربي بـ `python3 i18n/build_en.py` (الترجمات في `i18n/en/`).

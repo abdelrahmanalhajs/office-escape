@@ -1,0 +1,60 @@
+0|Don't Trust Your Ears
+1|Sounds
+2|Play the show's secret music on the pad.
+3|Not everything you hear is music. Some sounds are planted to confuse you.
+4|The studio's secret tune, not the street's. Look backstage.
+5|4
+6|notes
+7|one
+8|repeats
+9|The tune is only 4 notes, and one of them repeats.
+10|I'll play you the show's secret music, but watch out... not every sound you hear is part of the tune!
+11|Play the recording
+12|You can replay it at no penalty
+13|The audience is booing... that's not the tune.
+14|Host's cards
+15|The show's original tune was made from just two things: the bell… and the audience. Anything else is noise.
+16|Host's card
+17|Camera
+18|The camera is on. Someone is watching.
+19|Spotlight
+20|Very hot. Don't touch.
+21|Audience seats
+22|Empty… but do you hear laughter?
+23|Backstage
+24|A piece of the prize code
+25|The piece was saved in the evidence bag.
+26|Next round
+27|Reverse
+28|Get through the four stages. Any mistake sends you back to the start.
+29|The host wants to win. You want to win.
+30|The round's name is written in English in front of you. Read it carefully.
+31|Every instruction has only one opposite on the screen. Ignore the host's words.
+32|The host is laughing… you're back to the first stage.
+33|Colors
+34|Order the colors correctly, then open the prize box.
+35|The word lies. The ink doesn't.
+36|The squares with no text aren't words.
+37|blue
+38|Count
+39|Sort
+40|Count only the ink color of the words, and sort from most to least. And the box likes the order of the rounds.
+41|Colors were never the problem… the problem is that you believe the first thing your eyes see!
+42|I hear your words and believe you… I see your deeds and I wonder
+43|Sort the colors from most frequent to least frequent:
+44|Your eyes believed the words.
+45|Prize box code
+46|The box isn't convinced.
+47|The Show
+48|A game show that vanished years ago… and came back for you.
+49|3
+50|6 players
+51|Years ago, a game show called
+52|was watched by millions. On the night of the final episode, the host vanished and the broadcast cut out.
+53|Years later, you got an email:
+54|You walked into the studio… and the door locked behind you.
+55|The Host
+56|Welcome, heroes of the final episode! You have 30 minutes to win 3 rounds and reach the grand prize. But remember… here the right answer isn't always the one that wins!
+57|Wait… did I ever say you could leave?!
+58|The broadcast cut out
+59|Sorry… the final episode isn't over yet. And I forgot to tell you: no rerun.

@@ -1,0 +1,195 @@
+0|The Meeting That Could Have Been an Email */\n(
+1|Nothing here.
+2|Marwan's Office
+3|Office
+4|Marwan's laptop is locked. Open it.
+5|Marwan doesn't write his password. He writes his day.
+6|Every photo on the lock screen matches something in the office. Not every number in the office is Marwan's.
+7|Park
+8|Go up
+9|Sit
+10|Open
+11|Four verbs, four things in the room, four numbers. Visitors aren't Marwan.
+12|Charge the phone
+13|Don't forget the card
+14|Send the email!!
+15|If you forgot the password, your whole day is ahead of you.
+16|The password is 4 digits. Park, go up, sit, open the drawer. The number of each place, in the same order, no letters.
+17|Click anything to take a look at it.
+18|Card holder
+19|Garage card
+20|Staff garage card
+21|Name
+22|Marwan
+23|Spot
+24|Trash bin
+25|Old garage ticket
+26|Visitor ticket
+27|Date
+28|Last month
+29|Pile of files
+30|Building directory
+31|Reception
+32|Ground floor
+33|Accounts
+34|Projects · Marwan
+35|Human Resources
+36|Desk edge
+37|Desk plate
+38|Desk drawers
+39|Drawers
+40|Chargers drawer
+41|Files drawer
+42|Paper drawer
+43|Phone
+44|The phone is out of charge. Just like the note said.
+45|Mug
+46|Cold coffee from yesterday.
+47|Water cooler
+48|Water. Just water.
+49|Unlocked...
+50|Wrong password.
+51|Inbox (1)
+52|Sent
+53|Drafts (14)
+54|From: Marwan
+55|Management
+56|Sent
+57|Final file
+58|Fax needed
+59|Thank you, we received the email. Please send a copy of the email and the attachment by fax for approval.
+60|The number directory is in the fax room.
+61|Take the document from the print tray
+62|Management's reply
+63|The printed document
+64|A printed copy of the email and attachment. 2 pages.
+65|Fax Room
+66|Fax
+67|Send the document to the right destination.
+68|The reply to the email said exactly where it goes. Go back to it from the bag.
+69|The label on the machine gives the order. Nobody said add them up.
+70|Branch
+71|Dept
+72|Machine
+73|6
+74|Six digits = three parts, each from a different directory in the room.
+75|Yes, we still use a fax.
+76|Label on the machine
+77|Branch code, then department code, then machine code. Write them one after another, no adding.
+78|Document in the send tray
+79|The send tray is empty
+80|Destination number
+81|Reception drawer
+82|Branch directory
+83|Notice board
+84|Department directory
+85|Maintenance file
+86|Machine sheet
+87|Printer
+88|Empty. The paper ran out a year ago.
+89|Someone wrote on it:
+90|No fax next to the water
+91|Basket
+92|Old fax receipts, all of them
+93|failed
+94|You don't have a document.
+95|The tray is empty.
+96|Sending...
+97|That number isn't the requested destination.
+98|Management representative
+99|Meeting · now
+100|Fax received. Please attend an urgent meeting in the meeting room to discuss the email.
+101|To the meeting room
+102|Meeting Room: Who Has the Key?
+103|Meeting
+104|The door is locked and one of the three has the key. Prove who before you open any envelope.
+105|Only one statement is true. Not two, and not none.
+106|Assume. For each assumption, count the true statements.
+107|Omar?
+108|Salma?
+109|Ziad?
+110|1
+111|Try each of the three names, and count the true statements each time.
+112|The key is with
+113|The key isn't with me
+114|The key isn't with
+115|Custody report
+116|The key isn't lost; it's in the custody of one of the three who hold envelopes. Note: only one of the three statements is true.
+117|The envelope won't open until you submit a full conclusion: who has the key, and whether each statement is true or false.
+118|Played by:
+119|Statement:
+120|True
+121|False
+122|coordinates the conclusion.
+123|Submit the conclusion and open the envelope
+124|A wrong conclusion = 30 second penalty
+125|The conclusion is incomplete: choose who has the key and rate all three statements.
+126|The key is inside!
+127|The operator rejected the conclusion. Re-check each statement against your assumption.
+128|Meeting password
+129|The same digits as Marwan's laptop, in a new order. Slot 1 is the first digit you type:
+130|Use each digit once.
+131|Meeting Room: the first one to
+132|wins
+133|Race
+134|Teamwork is over. Everyone for themselves. The first correct
+135|wins.
+136|One of the four rules pins down a whole slot on its own.
+137|One rule gives the sum of two slots. Only two of the remaining digits make that sum.
+138|Bigger
+139|?+?
+140|1 left
+141|Once three slots are fixed, the last digit has only one place to go.
+142|Player
+143|Join from your phones
+144|Open the same link on your phone, tap
+145|I'm a player
+146|at the bottom of the game page, and enter the code:
+147|Nobody has joined yet...
+148|Or from this screen
+149|Join stations
+150|Password
+151|Wrong.
+152|Beaten by
+153|someone
+154|Back
+155|Player station
+156|The phone station needs the
+157|link and a signed-in account. Join from the main screen.
+158|Setting up the station...
+159|The Meeting That Could Have Been an Email · Race
+160|Join the race
+161|Game code
+162|Your name
+163|Join
+164|Enter the code and your name.
+165|No game with that code.
+166|You won!
+167|The fastest one into a meeting that could have been an email
+168|Meeting topic: making sure the email arrived.
+169|code
+170|You're in. Wait.
+171|As soon as the team reaches the meeting room, the race will show up here.
+172|The race has started!
+173|someone else
+174|Email
+175|The Meeting That Could Have Been an Email
+176|A locked laptop, a fax from the eighties, and a pointless meeting.
+177|4 players
+178|Marwan is out today, and there's a task that must close before the round ends: send the final file from the email on his laptop.
+179|The laptop is locked, but Marwan keeps forgetting his password, so he left reminders on the lock screen. You have 20 minutes.
+180|Ending
+181|Who has the key? · Teamwork
+182|The whole team goes in together.
+183|The first one to
+184|wins · Competition
+185|The first two rooms are teamwork; the last is an individual race.
+186|I'm a player in the race, I want to join from my phone
+187|All four went in together
+188|made it to the meeting
+189|The manager
+190|Meeting topic
+191|Thanks for coming. I just wanted to make sure the email arrived.
+192|Time's up
+193|The meeting started without you, and the manager is asking:
+194|Does anyone know if the email arrived?
