@@ -49,7 +49,7 @@ RAW={
  L("  const recipe=","  const recipe=R.shuffle([`${LN[order[0]]} at the base.`,`${LN[order[1]]} directly on top of ${LN[order[0]]}.`,`${LN[order[2]]} directly on top of ${LN[order[1]]}.`,`${LN[order[3]]} as the very last layer on top.`]);"),
  L("const LAY=","const LAY={choc:{n:'Chocolate',c:'#5a3320',w:'200px',num:'9'},cake:{n:'Cake',c:'#e0b060',w:'170px',num:'4'},cream:{n:'Cream',c:'#f7a8c0',w:'140px',num:'7'},straw:{n:'Strawberry',c:'#e2264d',w:'110px',num:'🍓🍓'}};"),
 ],
-'index.html':[],
+'index.html':[L("const SHARE_T=","const SHARE_T={won:['Meeting genius: you finished with zero help cards 🏆','Fast as a “thanks” reply 🚀','You made it out by a hair, but you made it 😅','You did it, with a little help from colleagues 🤝'],lose:['Time ran out and the email still has not been sent 😬','Next time you will get out 💪'],line:(t,g,v,time)=>`${g}\\n${v}\\n⏱ ${time}\\n${t}`,ask:'Start here:',btn:'Share your result on WhatsApp',copy:'Copy result',copied:'Copied',card:'Your result'};")],
 }
 def apply_raw(path,src):
     for kind,a,b in RAW.get(path,[]):
